@@ -1,0 +1,11 @@
+4
+Added Android-specific options.
+
+3
+Added DISABLE_GUI_REMOTEWEBCAMSRV option to improve compatibility with Android.
+
+2
+Update to take into account changes in OSUtils and to use OpenCV 2.4.2, and use of the static libraries in Release.
+
+1
+Initial version.

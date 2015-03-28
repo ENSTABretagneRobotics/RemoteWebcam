@@ -1,0 +1,13 @@
+% videoimgwidth
+320
+% videoimgheight
+240
+% timeout (in ms)
+5
+% cli1address
+127.0.0.1
+%192.168.182.128
+%192.168.1.10
+%192.168.0.60
+% cli1port
+4014

@@ -1,0 +1,25 @@
+% camid (0, 1, 2...)
+0
+% videoimgwidth
+320
+%800
+% videoimgheight
+240
+%600
+% pixcolorchgthreshold (in [0,255], the lower is the better quality, but use more bandwidth)
+12
+%6
+% timecompressiondividerthreshold
+50
+%15
+% fullimgperiod (in s)
+1
+% jpegquality (in [0,100], the higher is the better quality, but use more CPU and bandwidth)
+50
+%95
+% method (0, 1)
+1
+% timeout (in ms)
+5
+% srvport
+4014
