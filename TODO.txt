@@ -1,20 +1,18 @@
+passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
+
+compatibilité mjpeg (surtout pour serveur)...
+rotation, scale et flip au niveau serveur
 rajouter l'enregistrement video en local en HD, et envoi en résolution plus faible
-Position du bStop dans la boucle de handlecli?
-
-rotation, compatibilité mjpeg
-
-bug cvdecode jpg (image jpg peut être théoriquement plus grande que image non compressée, et peut-être autre chose...), faire installeur srv et cli, 
-rajoute options symétries et autres (bFlipH, bFlipV, échanger i, échanger j, échanger i+j=topdown2bottomup?), et enregistrement video...
-
+rotation, scale et flip ainsi que l'enregistrement supportés par le client dans AROVTest mais pas la résolution automatique, pour ce client c'est l'inverse...
 mettre en option jpeg, png, pas de movement detection et ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
-
 HSV?
 
 
 
 OLD
 
-passer en UDP -> relativement peu utile
+bug cvdecode jpg (image jpg peut être théoriquement plus grande que image non compressée, et peut-être autre chose...)
+Position du bStop dans la boucle de handlecli?
 
 cvEncodeImage
 envoyer la taille de l'image au début

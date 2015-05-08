@@ -15,8 +15,11 @@ IplImage* image = NULL;
 char* databuf = NULL;
 BOOL bError = FALSE;
 
+char cli1address[MAX_BUF_LEN];
+char cli1port[MAX_BUF_LEN];
 int videoimgwidth = 0; 
 int videoimgheight = 0; 
+int captureperiod = 0;
 int timeout = 0;
-char cli1port[MAX_BUF_LEN];
-char cli1address[MAX_BUF_LEN];
+BOOL bUDP = FALSE;
+BOOL bDynamicWindowResizing = FALSE;

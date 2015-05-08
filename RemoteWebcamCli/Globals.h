@@ -20,10 +20,13 @@ EXTERN_C IplImage* image;
 EXTERN_C char* databuf;
 EXTERN_C BOOL bError;
 
+EXTERN_C char cli1address[MAX_BUF_LEN];
+EXTERN_C char cli1port[MAX_BUF_LEN];
 EXTERN_C int videoimgwidth; 
 EXTERN_C int videoimgheight; 
+EXTERN_C int captureperiod;
 EXTERN_C int timeout;
-EXTERN_C char cli1port[MAX_BUF_LEN];
-EXTERN_C char cli1address[MAX_BUF_LEN];
+EXTERN_C BOOL bUDP;
+EXTERN_C BOOL bDynamicWindowResizing;
 
 #endif // GLOBALS_H

@@ -6,27 +6,36 @@ int LoadConfig()
 	char line[MAX_BUF_LEN];
 
 	// Default values.
-	videoimgwidth = 640; 
-	videoimgheight = 480; 
-	timeout = 0;
 	memset(cli1address, 0, sizeof(cli1address));
 	sprintf(cli1address, "127.0.0.1");
 	memset(cli1port, 0, sizeof(cli1port));
 	sprintf(cli1port, "27254");
+	videoimgwidth = 640; 
+	videoimgheight = 480; 
+	captureperiod = 5;
+	timeout = 0;
+	bUDP = FALSE;
+	bDynamicWindowResizing = FALSE;
 
 	file = fopen("RemoteWebcamCli.txt", "r");
 	if (file != NULL)
 	{
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%255s", cli1address) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%255s", cli1port) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &videoimgwidth) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &videoimgheight) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &captureperiod) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%255s", cli1address) != 1) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bUDP) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%255s", cli1port) != 1) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bDynamicWindowResizing) != 1) printf("Invalid configuration file.\n");
 
 		//if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		//if (sscanf(line, "%lf", &val) != 1) printf("Invalid configuration file.\n");
@@ -36,6 +45,22 @@ int LoadConfig()
 	else
 	{
 		printf("Configuration file not found.\n");
+	}
+
+	if (videoimgwidth <= 0)
+	{
+		printf("Invalid parameter : videoimgwidth.\n");
+		videoimgwidth = 640;
+	}
+	if (videoimgheight <= 0)
+	{
+		printf("Invalid parameter : videoimgheight.\n");
+		videoimgheight = 480;
+	}
+	if (captureperiod < 0)
+	{
+		printf("Invalid parameter : captureperiod.\n");
+		captureperiod = 5;
 	}
 
 	return EXIT_SUCCESS;
@@ -62,6 +87,14 @@ int recvdecode(void)
 	if (val == UINT_MAX)
 	{
 		// Full image data (with static compression).
+
+		// Quick checks...
+		if (((int)header[1] < 0)||((int)header[2] < 0))
+		{
+			printf("Bad compression or transmission error.\n");
+			return EXIT_FAILURE;
+		}
+
 		mat = cvCreateMat(header[1], header[2], CV_8UC1);
 		if (mat == NULL)
 		{
@@ -87,12 +120,15 @@ int recvdecode(void)
 
 		cvReleaseMat(&mat);
 
+		// Resolution changed by server.
 		if ((image->width != videoimgwidth)||(image->height != videoimgheight))
 		{
 			videoimgwidth = image->width;
 			videoimgheight = image->height;
 
-			databufnew = (char*)calloc(image->imageSize+7, sizeof(char));
+			if (bDynamicWindowResizing) cvResizeWindow("Client", videoimgwidth, videoimgheight);
+
+			databufnew = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 			if (!databufnew)	
 			{
 				printf("realloc() failed.\n");
@@ -104,9 +140,19 @@ int recvdecode(void)
 	}
 	else
 	{
+		// Partial image data (dynamic time compression) or full image data without compression.
+
+		// Quick checks...
+		if (((int)header[1] < 0)||((int)header[1] > 4096)||((int)header[2] < 0)||((int)header[2] > 4096)||(val > 3*4096*4096+3*sizeof(unsigned int)))
+		{
+			printf("Unable to set desired video resolution or transmission error.\n");
+			return EXIT_FAILURE;
+		}
+
 		videoimgwidth = header[1];
 		videoimgheight = header[2];
 
+		// Resolution changed by server.
 		if ((image->width != videoimgwidth)||(image->height != videoimgheight))
 		{
 			imagenew = cvCreateImage(cvSize(videoimgwidth, videoimgheight), IPL_DEPTH_8U, 3);
@@ -118,7 +164,9 @@ int recvdecode(void)
 			cvReleaseImage(&image);
 			image = imagenew;
 
-			databufnew = (char*)calloc(image->imageSize+7, sizeof(char));
+			if (bDynamicWindowResizing) cvResizeWindow("Client", videoimgwidth, videoimgheight);
+
+			databufnew = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 			if (!databufnew)	
 			{
 				printf("realloc() failed.\n");
@@ -129,20 +177,39 @@ int recvdecode(void)
 		}
 
 		nbBytes = val-3*sizeof(unsigned int);
+		if (nbBytes > image->imageSize)
+		{
+			printf("Bad compression or transmission error.\n");
+			return EXIT_FAILURE;
+		}
 		if (nbBytes > 0)
 		{
 			if (recvall(s1, databuf, nbBytes) != EXIT_SUCCESS)
 			{
 				return EXIT_FAILURE;
 			}
-
-			i = nbBytes;
-			while (i -= 7) // 7 for sizeof(unsigned int)+3*sizeof(char).
+			if (nbBytes == image->imageSize)
 			{
-				// Blue index value of the pixel.
-				memcpy((char*)&val, databuf+i, sizeof(unsigned int)); 
-				// BGR values.
-				memcpy(image->imageData+val, databuf+i+sizeof(unsigned int), 3*sizeof(char));
+				// Full image data without compression.
+				memcpy(image->imageData, databuf, image->imageSize);
+			}
+			else
+			{
+				// Partial image data (dynamic time compression).
+				i = nbBytes;
+				while (i -= 7) // 7 for sizeof(unsigned int)+3*sizeof(char).
+				{
+					// Blue index value of the pixel.
+					memcpy((char*)&val, databuf+i, sizeof(unsigned int)); 
+					// Check if index is valid.
+					if ((val < 0)||(val > image->imageSize-3*sizeof(char))) 
+					{
+						printf("Bad compression or transmission error.\n");
+						return EXIT_FAILURE;
+					}
+					// BGR values.
+					memcpy(image->imageData+val, databuf+i+sizeof(unsigned int), 3*sizeof(char));
+				}
 			}
 		}
 	}
@@ -152,7 +219,7 @@ int recvdecode(void)
 
 void CleanUp(void)
 {
-	releasetcpcli(s1);
+	if (bUDP) releaseudpcli(s1); else releasetcpcli(s1);
 	free(databuf);
 	cvReleaseImage(&image);
 	cvDestroyWindow("Client");
@@ -191,7 +258,7 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	databuf = (char*)calloc(image->imageSize+7, sizeof(char));
+	databuf = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 	if (!databuf)	
 	{
 		printf("calloc() failed.\n");
@@ -200,7 +267,10 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	if (inittcpcli(&s1, cli1address, cli1port) != EXIT_SUCCESS)
+	if (
+		(bUDP&&(initudpcli(&s1, cli1address, cli1port) != EXIT_SUCCESS))||
+		((!bUDP)&&(inittcpcli(&s1, cli1address, cli1port) != EXIT_SUCCESS))
+		)
 	{
 		free(databuf);
 		cvReleaseImage(&image);
@@ -245,7 +315,7 @@ int main(int argc, char* argv[])
 
 			cvShowImage("Client", image);
 
-			c = cvWaitKey(5);
+			c = cvWaitKey(captureperiod);
 			if ((char)c == 27)
 			{
 				CleanUp();
@@ -255,7 +325,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	if (releasetcpcli(s1) != EXIT_SUCCESS)
+	if (
+		(bUDP&&(releaseudpcli(s1) != EXIT_SUCCESS))||
+		((!bUDP)&&(releasetcpcli(s1) != EXIT_SUCCESS))
+		)
 	{
 		free(databuf);
 		cvReleaseImage(&image);

@@ -7,16 +7,18 @@ int LoadConfig()
 
 	// Default values.
 	camid = 0;
-	videoimgwidth = 640; 
-	videoimgheight = 480; 
-	pixcolorchgthreshold = 3; 
-	timecompressiondividerthreshold = 4;
-	fullimgperiod = 1; 
-	jpegquality = 95;
-	method = 0;
-	timeout = 0;
 	memset(srvport, 0, sizeof(srvport));
 	sprintf(srvport, "27254");
+	videoimgwidth = 640; 
+	videoimgheight = 480; 
+	captureperiod = 100;
+	timeout = 0;
+	bUDP = FALSE;
+	pixcolorchgthreshold = 3; 
+	timecompressiondividerthreshold = 4;
+	fullimgperiod = 1000; 
+	jpegquality = 95;
+	method = 0;
 
 #ifdef __ANDROID__
 	file = fopen("/storage/sdcard0/download/RemoteWebcamSrv.txt", "r");
@@ -28,9 +30,17 @@ int LoadConfig()
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &camid) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%255s", srvport) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &videoimgwidth) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &videoimgheight) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &captureperiod) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bUDP) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &pixcolorchgthreshold) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
@@ -41,10 +51,6 @@ int LoadConfig()
 		if (sscanf(line, "%d", &jpegquality) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &method) != 1) printf("Invalid configuration file.\n");
-		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
-		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%255s", srvport) != 1) printf("Invalid configuration file.\n");
 
 		//if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		//if (sscanf(line, "%lf", &val) != 1) printf("Invalid configuration file.\n");
@@ -54,6 +60,27 @@ int LoadConfig()
 	else
 	{
 		printf("Configuration file not found.\n");
+	}
+
+	if (videoimgwidth <= 0)
+	{
+		printf("Invalid parameter : videoimgwidth.\n");
+		videoimgwidth = 640;
+	}
+	if (videoimgheight <= 0)
+	{
+		printf("Invalid parameter : videoimgheight.\n");
+		videoimgheight = 480;
+	}
+	if (captureperiod < 0)
+	{
+		printf("Invalid parameter : captureperiod.\n");
+		captureperiod = 100;
+	}
+	if (timecompressiondividerthreshold < 1)
+	{
+		printf("Invalid parameter : timecompressiondividerthreshold.\n");
+		timecompressiondividerthreshold = 4;
 	}
 
 	return EXIT_SUCCESS;
@@ -279,11 +306,14 @@ int handlecli(SOCKET sockcli, void* pParam)
 			}
 			cvCopy(image, detectimage, NULL);
 
-			if ((GetTimeElapsedChronoQuick(&chrono) > fullimgperiod)||bForceSendFullImg) 
+			if (
+				((method == 0)||(method == 1))&&
+				((GetTimeElapsedChronoQuick(&chrono) > 0.001*fullimgperiod)||bForceSendFullImg)
+				) 
 			{
 				StopChronoQuick(&chrono);
 				bForceSendFullImg = FALSE;
-				val = UINT_MAX; // Special number to indicate a full image.
+				val = UINT_MAX; // Special number to indicate a full image with static compression.
 				memcpy(databuf, (char*)&val, sizeof(unsigned int));
 				mat = cvEncodeImage(".JPEG", image, jpegparams);
 				if (mat == NULL)
@@ -312,6 +342,13 @@ int handlecli(SOCKET sockcli, void* pParam)
 			{
 				switch (method)
 				{
+				case 0:
+					if (MovementDetection(previmage, image, detectimage, databuf, &nbBytes) != EXIT_SUCCESS)
+					{
+						CleanUp();
+						return EXIT_FAILURE;
+					}
+					break;
 				case 1:
 					if (MovementDetection2(previmage, image, detectimage, databuf, &nbBytes) != EXIT_SUCCESS)
 					{
@@ -319,12 +356,20 @@ int handlecli(SOCKET sockcli, void* pParam)
 						return EXIT_FAILURE;
 					}
 					break;
+				case 2:	
+					val = (unsigned int)image->imageSize+3*sizeof(unsigned int); // Special number to indicate a full image without compression.
+					memcpy(databuf, (char*)&val, sizeof(unsigned int));
+					// Image dimensions.
+					memcpy(databuf+sizeof(unsigned int), (char*)&image->width, sizeof(unsigned int));
+					memcpy(databuf+2*sizeof(unsigned int), (char*)&image->height, sizeof(unsigned int));
+					// Full image data without compression.
+					memcpy(databuf+3*sizeof(unsigned int), image->imageData, (size_t)image->imageSize);
+					nbBytes = val;
+					break;
 				default:
-					if (MovementDetection(previmage, image, detectimage, databuf, &nbBytes) != EXIT_SUCCESS)
-					{
-						CleanUp();
-						return EXIT_FAILURE;
-					}
+					printf("Invalid parameter.\n");
+					CleanUp();
+					return EXIT_FAILURE;
 					break;
 				}
 				sprintf(szText, "Data transmitted : %d bytes", nbBytes);
@@ -342,21 +387,22 @@ int handlecli(SOCKET sockcli, void* pParam)
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 			cvShowImage("Detection", detectimage);
 
-			c = cvWaitKey(40);
+			c = cvWaitKey(captureperiod);
 			if ((char)c == 27)
 			{
 				CleanUp();
 				return EXIT_SUCCESS;
 			}
 #else
-			mSleep(40);
+			mSleep(captureperiod);
 #endif // DISABLE_GUI_REMOTEWEBCAMSRV
-			if (bStop)
-			{
-				CleanUp();
-				return EXIT_SUCCESS;
-			}
 			break;
+		}
+
+		if (bStop)
+		{
+			CleanUp();
+			return EXIT_SUCCESS;
 		}
 	}
 
@@ -429,7 +475,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_GUI_REMOTEWEBCAMSRV
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
-	databuf = (char*)calloc(image->imageSize+7, sizeof(char));
+	databuf = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 	if (!databuf)	
 	{
 		printf("calloc() failed.\n");
@@ -445,7 +491,10 @@ int main(int argc, char* argv[])
 
 	bForceSendFullImg = TRUE;
 
-	if (LaunchSingleCliTCPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS)
+	if (
+		(bUDP&&(LaunchUDPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))||
+		((!bUDP)&&(LaunchSingleCliTCPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))
+		)
 	{
 		printf("Error launching the server.\n");
 #ifdef _DEBUG

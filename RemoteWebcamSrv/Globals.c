@@ -21,12 +21,14 @@ BOOL bForceSendFullImg = FALSE;
 BOOL bStop = FALSE;
 
 int camid = 0;
+char srvport[MAX_BUF_LEN];
 int videoimgwidth = 0; 
 int videoimgheight = 0; 
+int captureperiod = 0;
+int timeout = 0;
+BOOL bUDP = FALSE;
 int pixcolorchgthreshold = 0; 
 int timecompressiondividerthreshold = 0; 
 int fullimgperiod = 0; 
 int jpegquality = 0; 
 int method = 0; 
-int timeout = 0;
-char srvport[MAX_BUF_LEN];
