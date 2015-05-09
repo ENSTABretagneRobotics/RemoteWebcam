@@ -25,5 +25,5 @@
 % jpegquality (in [0,100], the higher is the better quality, but use more CPU and bandwidth)
 50
 %95
-% method (0, 1, 2)
+% method (0, 1, 2, 3)
 1

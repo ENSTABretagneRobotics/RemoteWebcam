@@ -17,7 +17,6 @@ IplImage* previmage = NULL;
 IplImage* detectimage = NULL;
 char* databuf = NULL;
 int jpegparams[2];
-BOOL bForceSendFullImg = FALSE;
 BOOL bStop = FALSE;
 
 int camid = 0;

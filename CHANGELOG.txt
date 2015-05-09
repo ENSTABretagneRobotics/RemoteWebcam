@@ -1,3 +1,6 @@
+6
+Added MJPEG support to server (method 3).
+
 5
 Added Visual Studio 2012 and OpenCV 2.4.9 support.
 Added captureperiod parameter and harmonization of configuration files.

@@ -278,6 +278,31 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
+	if (bUDP)
+	{
+		int broadcastenabled = 1;
+		struct sockaddr_in sa;
+		socklen_t salen = sizeof(struct sockaddr_in);
+
+		setsockopt(s1, SOL_SOCKET, SO_BROADCAST, (char*)&broadcastenabled, sizeof(broadcastenabled));
+
+		memset(&sa, 0, sizeof(sa));
+
+		sa.sin_family = AF_INET;
+		//sa.sin_addr.s_addr = INADDR_BROADCAST;
+		sa.sin_addr.s_addr = inet_addr(cli1address);
+		sa.sin_port = htons((unsigned short)atoi(cli1port));
+
+		sprintf(databuf, "HELLO");
+		sendtoall(s1, databuf, strlen("HELLO")+1, (struct sockaddr*)&sa, sizeof(sa));
+		recvfromall(s1, databuf, strlen("OK")+1, (struct sockaddr*)&sa, &salen);
+		sprintf(databuf, "HELLO");
+		sendall(s1, databuf, strlen("HELLO")+1);
+		recvall(s1, databuf, strlen("OK")+1);
+
+		//mSleep(15000);
+	}
+
 	for (;;)
 	{
 		fd_set sock_set;

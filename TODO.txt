@@ -1,16 +1,19 @@
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
+max UDP packet size : 65507...
 
-compatibilité mjpeg (surtout pour serveur)...
+"%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
+
 rotation, scale et flip au niveau serveur
 rajouter l'enregistrement video en local en HD, et envoi en résolution plus faible
 rotation, scale et flip ainsi que l'enregistrement supportés par le client dans AROVTest mais pas la résolution automatique, pour ce client c'est l'inverse...
-mettre en option jpeg, png, pas de movement detection et ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
+mettre en option jpeg, png et ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
 HSV?
 
 
 
 OLD
 
+compatibilité mjpeg (surtout pour serveur)...
 bug cvdecode jpg (image jpg peut être théoriquement plus grande que image non compressée, et peut-être autre chose...)
 Position du bStop dans la boucle de handlecli?
 

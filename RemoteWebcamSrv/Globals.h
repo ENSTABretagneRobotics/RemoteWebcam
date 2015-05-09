@@ -24,7 +24,6 @@ EXTERN_C IplImage* previmage;
 EXTERN_C IplImage* detectimage;
 EXTERN_C char* databuf;
 EXTERN_C int jpegparams[2];
-EXTERN_C BOOL bForceSendFullImg;
 EXTERN_C BOOL bStop;
 
 EXTERN_C int camid;

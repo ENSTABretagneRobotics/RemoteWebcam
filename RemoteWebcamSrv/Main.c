@@ -246,6 +246,9 @@ int handlecli(SOCKET sockcli, void* pParam)
 	char szText[MAX_BUF_LEN];
 	unsigned int val = 0;
 	CvMat* mat = NULL;
+	BOOL bForceSendFullImg = TRUE;
+	BOOL bInitDone = FALSE;
+	char httpbuf[2048];
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 	int c = 0;
 #endif // DISABLE_GUI_REMOTEWEBCAMSRV
@@ -267,6 +270,30 @@ int handlecli(SOCKET sockcli, void* pParam)
 	}
 
 	StartChrono(&chrono);
+
+	if (bUDP)
+	{
+		int broadcastenabled = 1;
+		struct sockaddr_in sa;
+		socklen_t salen = sizeof(struct sockaddr_in);
+
+		setsockopt(sockcli, SOL_SOCKET, SO_BROADCAST, (char*)&broadcastenabled, sizeof(broadcastenabled));
+
+		memset(&sa, 0, sizeof(sa));
+
+		sa.sin_family = AF_INET;
+		//sa.sin_addr.s_addr = INADDR_BROADCAST;
+		sa.sin_addr.s_addr = inet_addr("192.168.1.255");
+		sa.sin_port = htons((unsigned short)atoi(srvport));
+
+		recvfromall(sockcli, databuf, strlen("HELLO")+1, (struct sockaddr*)&sa, &salen);
+		connect(sockcli, (struct sockaddr*)&sa, salen);
+		sprintf(databuf, "OK");
+		sendtoall(sockcli, databuf, strlen("OK")+1, (struct sockaddr*)&sa, salen);
+		recvall(sockcli, databuf, strlen("HELLO")+1);
+		sprintf(databuf, "OK");
+		sendall(sockcli, databuf, strlen("OK")+1);
+	}
 
 	for (;;)
 	{
@@ -331,11 +358,6 @@ int handlecli(SOCKET sockcli, void* pParam)
 				cvReleaseMat(&mat);
 				sprintf(szText, "Periodic complete image : %d bytes", nbBytes);
 				cvPutText(detectimage, szText, cvPoint(0,48), &font, CV_RGB(255,0,0));
-				if (sendall(sockcli, databuf, nbBytes) != EXIT_SUCCESS)
-				{
-					CleanUp();
-					return EXIT_FAILURE;
-				}
 				StartChrono(&chrono);
 			}
 			else
@@ -366,6 +388,54 @@ int handlecli(SOCKET sockcli, void* pParam)
 					memcpy(databuf+3*sizeof(unsigned int), image->imageData, (size_t)image->imageSize);
 					nbBytes = val;
 					break;
+				case 3:	
+					nbBytes = 0;
+					if (!bInitDone)
+					{
+						// Receive the GET request, but do not analyze it...
+						memset(httpbuf, 0, sizeof(httpbuf));
+						if (recv(sockcli, httpbuf, sizeof(httpbuf), 0) <= 0)
+						{
+							printf("recv() failed.\n");
+							CleanUp();
+							return EXIT_FAILURE;
+						}
+						memset(httpbuf, 0, sizeof(httpbuf));
+						sprintf(httpbuf, 
+							"HTTP/1.1 200 OK\r\n"
+							"Server: RemoteWebcamSrv\r\n"
+							//"Connection: close\r\n"
+							//"Max-Age: 0\r\n"
+							//"Expires: 0\r\n"
+							//"Cache-Control: no-cache, private, no-store, must-revalidate, pre-check = 0, post-check = 0, max-age = 0\r\n"
+							//"Pragma: no-cache\r\n"
+							"Content-Type: multipart/x-mixed-replace; boundary=--boundary\r\n"
+							//"Media-type: image/jpeg\r\n"
+							"\r\n");
+						memcpy(databuf, httpbuf, strlen(httpbuf));
+						nbBytes += strlen(httpbuf);
+						bInitDone = TRUE;
+					}
+					mat = cvEncodeImage(".JPEG", image, jpegparams);
+					if (mat == NULL)
+					{
+						printf("cvMat() failed.\n");
+						CleanUp();
+						return EXIT_FAILURE;
+					}
+					memset(httpbuf, 0, sizeof(httpbuf));
+					sprintf(httpbuf, 
+						"--boundary\r\n"
+						"Content-Type: image/jpeg\r\n"
+						"Content-Length: %d\r\n"
+						"\r\n", mat->rows*mat->cols);
+					memcpy(databuf+nbBytes, httpbuf, strlen(httpbuf));
+					nbBytes += strlen(httpbuf);
+					// Full image data (with static compression).
+					memcpy(databuf+nbBytes, mat->data.ptr, (size_t)(mat->rows*mat->cols));
+					nbBytes += (mat->rows*mat->cols);
+					cvReleaseMat(&mat);
+					break;
 				default:
 					printf("Invalid parameter.\n");
 					CleanUp();
@@ -374,11 +444,11 @@ int handlecli(SOCKET sockcli, void* pParam)
 				}
 				sprintf(szText, "Data transmitted : %d bytes", nbBytes);
 				cvPutText(detectimage, szText, cvPoint(0,32), &font, CV_RGB(255,0,0));
-				if (sendall(sockcli, databuf, nbBytes) != EXIT_SUCCESS)
-				{
-					CleanUp();
-					return EXIT_FAILURE;
-				}
+			}
+			if (sendall(sockcli, databuf, nbBytes) != EXIT_SUCCESS)
+			{
+				CleanUp();
+				return EXIT_FAILURE;
 			}
 			sprintf(szText, "Uncompressed size : %d bytes", image->imageSize);
 			cvPutText(detectimage, szText, cvPoint(0,16), &font, CV_RGB(255,0,0));
@@ -447,6 +517,7 @@ int main(int argc, char* argv[])
 
 	LoadConfig();
 
+	//webcam = cvCreateFileCapture("test3.wmv");
 	webcam = cvCreateCameraCapture(camid);
 	if (!webcam) 
 	{
@@ -488,8 +559,6 @@ int main(int argc, char* argv[])
 
 	jpegparams[0] = CV_IMWRITE_JPEG_QUALITY;
 	jpegparams[1] = jpegquality; // In [0;100] (the higher is the better quality).
-
-	bForceSendFullImg = TRUE;
 
 	if (
 		(bUDP&&(LaunchUDPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))||
