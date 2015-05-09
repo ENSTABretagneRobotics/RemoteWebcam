@@ -6,7 +6,7 @@ max UDP packet size : 65507...
 rotation, scale et flip au niveau serveur
 rajouter l'enregistrement video en local en HD, et envoi en résolution plus faible
 rotation, scale et flip ainsi que l'enregistrement supportés par le client dans AROVTest mais pas la résolution automatique, pour ce client c'est l'inverse...
-mettre en option jpeg, png et ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
+ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
 HSV?
 
 

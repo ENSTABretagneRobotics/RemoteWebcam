@@ -17,7 +17,9 @@ int LoadConfig()
 	pixcolorchgthreshold = 3; 
 	timecompressiondividerthreshold = 4;
 	fullimgperiod = 1000; 
-	jpegquality = 95;
+	encodequality = 95;
+	memset(encodetype, 0, sizeof(encodetype));
+	sprintf(encodetype, ".JPEG");
 	method = 0;
 
 #ifdef __ANDROID__
@@ -48,7 +50,9 @@ int LoadConfig()
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &fullimgperiod) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%d", &jpegquality) != 1) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &encodequality) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%31s", encodetype) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &method) != 1) printf("Invalid configuration file.\n");
 
@@ -96,7 +100,7 @@ int MovementDetection(IplImage* previmg, IplImage* img, IplImage* detectimg, cha
 	CvMat* mat = NULL;
 
 	// First compute the static compression to be able to compare with the time compression.
-	mat = cvEncodeImage(".JPEG", img, jpegparams);
+	mat = cvEncodeImage(encodetype, img, encodeparams);
 	if (mat == NULL)
 	{
 		printf("cvMat() failed.\n");
@@ -205,7 +209,7 @@ int MovementDetection2(IplImage* previmg, IplImage* img, IplImage* detectimg, ch
 	{
 		val = UINT_MAX; // Special number to indicate a full image.
 		memcpy(buf, (char*)&val, sizeof(unsigned int));
-		mat = cvEncodeImage(".JPEG", img, jpegparams);
+		mat = cvEncodeImage(encodetype, img, encodeparams);
 		if (mat == NULL)
 		{
 			printf("cvMat() failed.\n");
@@ -342,7 +346,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 				bForceSendFullImg = FALSE;
 				val = UINT_MAX; // Special number to indicate a full image with static compression.
 				memcpy(databuf, (char*)&val, sizeof(unsigned int));
-				mat = cvEncodeImage(".JPEG", image, jpegparams);
+				mat = cvEncodeImage(encodetype, image, encodeparams);
 				if (mat == NULL)
 				{
 					printf("cvMat() failed.\n");
@@ -416,7 +420,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 						nbBytes += strlen(httpbuf);
 						bInitDone = TRUE;
 					}
-					mat = cvEncodeImage(".JPEG", image, jpegparams);
+					mat = cvEncodeImage(encodetype, image, encodeparams);
 					if (mat == NULL)
 					{
 						printf("cvMat() failed.\n");
@@ -517,6 +521,7 @@ int main(int argc, char* argv[])
 
 	LoadConfig();
 
+	//webcam = cvCreateFileCapture("SAUCISSE wall ball - VIDEO2605.mp4");
 	//webcam = cvCreateFileCapture("test3.wmv");
 	webcam = cvCreateCameraCapture(camid);
 	if (!webcam) 
@@ -557,8 +562,21 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	jpegparams[0] = CV_IMWRITE_JPEG_QUALITY;
-	jpegparams[1] = jpegquality; // In [0;100] (the higher is the better quality).
+	if (strncmp(encodetype, ".JPEG", min(strlen(encodetype), strlen(".JPEG"))+1) == 0)
+	{
+		encodeparams[0] = CV_IMWRITE_JPEG_QUALITY;
+		encodeparams[1] = encodequality;
+	}
+	else if (strncmp(encodetype, ".PNG", min(strlen(encodetype), strlen(".PNG"))+1) == 0)
+	{
+		encodeparams[0] = CV_IMWRITE_PNG_COMPRESSION;
+		encodeparams[1] = encodequality;
+	}
+	else
+	{
+		encodeparams[0] = CV_IMWRITE_PXM_BINARY;
+		encodeparams[1] = encodequality;
+	}
 
 	if (
 		(bUDP&&(LaunchUDPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))||

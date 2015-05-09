@@ -16,7 +16,7 @@ IplImage* image = NULL;
 IplImage* previmage = NULL;
 IplImage* detectimage = NULL;
 char* databuf = NULL;
-int jpegparams[2];
+int encodeparams[2];
 BOOL bStop = FALSE;
 
 int camid = 0;
@@ -29,5 +29,6 @@ BOOL bUDP = FALSE;
 int pixcolorchgthreshold = 0; 
 int timecompressiondividerthreshold = 0; 
 int fullimgperiod = 0; 
-int jpegquality = 0; 
+int encodequality = 0; 
+char encodetype[32];
 int method = 0; 

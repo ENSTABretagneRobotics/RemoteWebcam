@@ -22,8 +22,11 @@
 %15
 % fullimgperiod (in ms)
 1000
-% jpegquality (in [0,100], the higher is the better quality, but use more CPU and bandwidth)
+% encodequality (JPEG : in [0,100], the higher is the better quality, but use more CPU and bandwidth, PNG : in [0,9], a higher value means a smaller size and longer compression time)
 50
-%95
+%50
+%9
+% encodetype (.JPEG or .PNG)
+.JPEG
 % method (0, 1, 2, 3)
 1

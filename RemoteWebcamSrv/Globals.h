@@ -23,7 +23,7 @@ EXTERN_C IplImage* image;
 EXTERN_C IplImage* previmage;
 EXTERN_C IplImage* detectimage;
 EXTERN_C char* databuf;
-EXTERN_C int jpegparams[2];
+EXTERN_C int encodeparams[2];
 EXTERN_C BOOL bStop;
 
 EXTERN_C int camid;
@@ -36,7 +36,8 @@ EXTERN_C BOOL bUDP;
 EXTERN_C int pixcolorchgthreshold; 
 EXTERN_C int timecompressiondividerthreshold; 
 EXTERN_C int fullimgperiod; 
-EXTERN_C int jpegquality; 
+EXTERN_C int encodequality; 
+EXTERN_C char encodetype[32];
 EXTERN_C int method; 
 
 #endif // GLOBALS_H
