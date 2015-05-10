@@ -1,5 +1,5 @@
 7
-Added RemoteWebcamMultiSrv (still in development).
+Added RemoteWebcamMultiSrv.
 
 6
 Added MJPEG support to server (method 3).

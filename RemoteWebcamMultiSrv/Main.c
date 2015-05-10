@@ -239,7 +239,8 @@ int MovementDetection2(IplImage* previmg, IplImage* img, IplImage* detectimg, ch
 
 int handlecli(SOCKET sockcli, void* pParam)
 {
-	//BOOL bForceSendFullImg = TRUE;
+	// Should send a full image when connecting for method 0 and 1...
+	//BOOL bForceSendFullImg = TRUE; 
 	BOOL bInitDone = FALSE;
 	char httpbuf[2048];
 	char* sendbuf = NULL;
@@ -328,12 +329,12 @@ int handlecli(SOCKET sockcli, void* pParam)
 					break;
 				}
 			}
-			
+
 			EnterCriticalSection(&sharedbufCS);
 			sendbuflen = sharedbuflen;
 			memcpy(sendbuf, sharedbuf, sharedbuflen);
 			LeaveCriticalSection(&sharedbufCS);
-			
+
 			if (sendall(sockcli, sendbuf, sendbuflen) != EXIT_SUCCESS)
 			{
 				free(sendbuf);
@@ -353,10 +354,16 @@ int handlecli(SOCKET sockcli, void* pParam)
 
 void CleanUp(void)
 {
+	bStop = TRUE;
 	StopChronoQuick(&chrono);
+#ifndef DISABLE_GUI_REMOTEWEBCAMSRV
+	cvDestroyWindow("Detection");
+#endif // DISABLE_GUI_REMOTEWEBCAMSRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
 	free(databuf);
+	mSleep(15000);
+	exit(EXIT_FAILURE);
 }
 
 THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
@@ -394,6 +401,15 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 		free(databuf);
 		return 0;
 	}
+
+#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
+	cvNamedWindow("Detection", CV_WINDOW_AUTOSIZE);
+	cvMoveWindow("Detection", 0, 0);
+	cvShowImage("Detection", image);
+	cvWaitKey(10);
+#else
+	mSleep(10);
+#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 
 	StartChrono(&chrono);
 
@@ -503,7 +519,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 		sprintf(szText, "Uncompressed size : %d bytes", image->imageSize);
 		cvPutText(detectimage, szText, cvPoint(0,16), &font, CV_RGB(255,0,0));
 		cvCopy(image, previmage, NULL);
-		
+
 #ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		cvShowImage("Detection", detectimage);
 
@@ -519,24 +535,30 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 		if (bStop) break;
 	}
 
+	bStop = TRUE;
 	StopChronoQuick(&chrono);
+#ifndef DISABLE_GUI_REMOTEWEBCAMSRV
+	cvDestroyWindow("Detection");
+#endif // DISABLE_GUI_REMOTEWEBCAMSRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
+	mSleep(15000);
+	exit(EXIT_SUCCESS);
 
 	return 0;
 }
 
-int quitcli()
+int quitall()
 {
 	bStop = TRUE;
 	mSleep(15000);
-	return EXIT_SUCCESS;
+	exit(EXIT_SUCCESS);
 }
 
 #ifdef __ANDROID__
 int AppNativeQuit()
 {
-	return quitcli();
+	return quitall();
 }
 
 int AppNativeMain()
@@ -577,9 +599,11 @@ int main(int argc, char* argv[])
 		encodeparams[1] = encodequality;
 	}
 
+	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
+
 	//webcam = cvCreateFileCapture("SAUCISSE wall ball - VIDEO2605.mp4");
-	webcam = cvCreateFileCapture("test3.wmv");
-	//webcam = cvCreateCameraCapture(camid);
+	//webcam = cvCreateFileCapture("test3.wmv");
+	webcam = cvCreateCameraCapture(camid);
 	if (!webcam) 
 	{
 		printf("Error opening the webcam.\n");
@@ -597,30 +621,27 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
-	cvNamedWindow("Detection", CV_WINDOW_AUTOSIZE);
-	cvMoveWindow("Detection", 0, 0);
-	cvShowImage("Detection", image);
-	cvWaitKey(10);
-#else
-	mSleep(10);
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
-	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
-
 	databuflen = image->imageSize+3*sizeof(unsigned int);
 	sharedbuflen = 0;
 	sharedbuf = (char*)calloc(databuflen, sizeof(char));
 	if (!sharedbuf)	
 	{
 		printf("calloc() failed.\n");
-#ifndef DISABLE_GUI_REMOTEWEBCAMSRV
-		cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
 
-	InitCriticalSection(&sharedbufCS);
+	if (InitCriticalSection(&sharedbufCS) != EXIT_SUCCESS)
+	{
+		printf("Error creating critical section.\n");
+#ifdef _DEBUG
+		fprintf(stdout, "Press ENTER to continue . . . ");
+		(void)getchar();
+#endif // _DEBUG
+		free(sharedbuf);
+		cvReleaseCapture(&webcam);
+		return EXIT_FAILURE;
+	}
 
 	if (CreateDefaultThread(handlecam, NULL, &handlecamThreadId) != EXIT_SUCCESS)
 	{
@@ -631,18 +652,15 @@ int main(int argc, char* argv[])
 #endif // _DEBUG
 		DeleteCriticalSection(&sharedbufCS);
 		free(sharedbuf);
-#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
-		cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
 
-	mSleep(1000);
+	mSleep(2000);
 
 	if (
 		(bUDP&&(LaunchUDPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))||
-		((!bUDP)&&(LaunchSingleCliTCPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))
+		((!bUDP)&&(LaunchMultiCliTCPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))
 		)
 	{
 		printf("Error launching the server.\n");
@@ -651,23 +669,19 @@ int main(int argc, char* argv[])
 		(void)getchar();
 #endif // _DEBUG
 		bStop = TRUE;
+		mSleep(15000);
 		WaitForThread(handlecamThreadId);
 		DeleteCriticalSection(&sharedbufCS);
 		free(sharedbuf);
-#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
-		cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
 
 	bStop = TRUE;
+	mSleep(15000);
 	WaitForThread(handlecamThreadId);
 	DeleteCriticalSection(&sharedbufCS);
 	free(sharedbuf);
-#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
-	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvReleaseCapture(&webcam);
 
 	return EXIT_SUCCESS;

@@ -483,17 +483,17 @@ int handlecli(SOCKET sockcli, void* pParam)
 	return EXIT_SUCCESS;
 }
 
-int quitcli()
+int quitall()
 {
 	bStop = TRUE;
 	mSleep(15000);
-	return EXIT_SUCCESS;
+	exit(EXIT_SUCCESS);
 }
 
 #ifdef __ANDROID__
 int AppNativeQuit()
 {
-	return quitcli();
+	return quitall();
 }
 
 int AppNativeMain()
@@ -533,6 +533,8 @@ int main(int argc, char* argv[])
 		encodeparams[1] = encodequality;
 	}
 
+	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
+
 	//webcam = cvCreateFileCapture("SAUCISSE wall ball - VIDEO2605.mp4");
 	//webcam = cvCreateFileCapture("test3.wmv");
 	webcam = cvCreateCameraCapture(camid);
@@ -561,7 +563,6 @@ int main(int argc, char* argv[])
 #else
 	mSleep(10);
 #endif // DISABLE_GUI_REMOTEWEBCAMSRV
-	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
 	databuf = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 	if (!databuf)	

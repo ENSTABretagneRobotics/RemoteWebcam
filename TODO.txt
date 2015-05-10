@@ -1,13 +1,11 @@
-faire projet supplémentaire RemoteWebcamMultiSrv
-créer fenêtre dans thread handlecam
+rajouter param &bStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
+"%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
 
 mettre à jour aussi la version Android, est-ce qu'elle supporte les threads?
 
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
 UDP marche pas pour l'instant, essayer de comprendre...
-
-"%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
 
 rotation, scale et flip au niveau serveur
 rajouter l'enregistrement video en local en HD, et envoi en résolution plus faible
@@ -19,6 +17,8 @@ HSV?
 
 OLD
 
+créer fenêtre dans thread handlecam
+faire projet supplémentaire RemoteWebcamMultiSrv
 compatibilité mjpeg (surtout pour serveur)...
 bug cvdecode jpg (image jpg peut être théoriquement plus grande que image non compressée, et peut-être autre chose...)
 Position du bStop dans la boucle de handlecli?
