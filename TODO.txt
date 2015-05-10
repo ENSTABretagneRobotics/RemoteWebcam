@@ -1,5 +1,11 @@
+faire projet supplémentaire RemoteWebcamMultiSrv
+créer fenêtre dans thread handlecam
+
+mettre à jour aussi la version Android, est-ce qu'elle supporte les threads?
+
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
+UDP marche pas pour l'instant, essayer de comprendre...
 
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
 

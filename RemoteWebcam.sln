@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamSrv", "RemoteWe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamCli", "RemoteWebcamCli\RemoteWebcamCli.vcxproj", "{1EECE22D-82AE-4112-831A-A7CC68F6E39F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamMultiSrv", "RemoteWebcamMultiSrv\RemoteWebcamMultiSrv.vcxproj", "{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +29,10 @@ Global
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Debug|Win32.Build.0 = Debug|Win32
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Release|Win32.ActiveCfg = Release|Win32
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Release|Win32.Build.0 = Release|Win32
+		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Debug|Win32.Build.0 = Debug|Win32
+		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Release|Win32.ActiveCfg = Release|Win32
+		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

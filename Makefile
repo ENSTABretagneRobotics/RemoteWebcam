@@ -4,7 +4,7 @@
 # in a terminal.
 # You need to install OpenCV 2.4.9.
 
-PROGS = RemoteWebcamSrv RemoteWebcamCli
+PROGS = RemoteWebcamMultiSrv RemoteWebcamSrv RemoteWebcamCli
 
 CC = gcc
 CFLAGS += -Wall -Winline -Wextra -g
@@ -31,6 +31,12 @@ OSTime.o: ../OSUtils/OSTime.c ../OSUtils/OSTime.h OSCore.o
 OSMisc.o: ../OSUtils/OSMisc.c ../OSUtils/OSMisc.h OSTime.o
 	$(CC) $(CFLAGS) -c $<
 
+OSThread.o: ../OSUtils/OSThread.c ../OSUtils/OSThread.h OSTime.o
+	$(CC) $(CFLAGS) -c $<
+
+OSCriticalSection.o: ../OSUtils/OSCriticalSection.c ../OSUtils/OSCriticalSection.h OSThread.o
+	$(CC) $(CFLAGS) -c $<
+
 OSNet.o: ../OSUtils/OSNet.c ../OSUtils/OSNet.h OSTime.o
 	$(CC) $(CFLAGS) -c $<
 
@@ -53,6 +59,15 @@ CvDisp.o: ../Extensions/Img/CvDisp.c ../Extensions/Img/CvDisp.h CvCore.o
 
 ############################# PROGS #############################
 
+RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+	$(CC) $(CFLAGS) -c $< -o $@
+
+RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.c RemoteWebcamMultiSrv/Globals.o
+	$(CC) $(CFLAGS) -c $< -o $@
+
+RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamMultiSrv/$@ $^
+
 RemoteWebcamSrv/Globals.o: RemoteWebcamSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -72,4 +87,4 @@ RemoteWebcamCli: RemoteWebcamCli/Main.o RemoteWebcamCli/Globals.o CvDisp.o CvDra
 	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamCli/$@ $^
 
 clean:
-	rm -f *.o *.obj core *.gch RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
+	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
