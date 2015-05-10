@@ -66,6 +66,12 @@
     <ClCompile Include="..\..\OSUtils\OSCriticalSection.c">
       <Filter>OSUtils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSEv.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSTimer.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -105,6 +111,12 @@
       <Filter>OSUtils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\OSUtils\OSCriticalSection.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSEv.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSTimer.h">
       <Filter>OSUtils</Filter>
     </ClInclude>
   </ItemGroup>

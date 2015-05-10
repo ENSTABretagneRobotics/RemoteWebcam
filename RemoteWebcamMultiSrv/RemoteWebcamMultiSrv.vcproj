@@ -222,6 +222,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\OSUtils\OSEv.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OSUtils\OSEv.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\OSUtils\OSMisc.c"
 				>
 			</File>
@@ -251,6 +259,14 @@
 			</File>
 			<File
 				RelativePath="..\..\OSUtils\OSTime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OSUtils\OSTimer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OSUtils\OSTimer.h"
 				>
 			</File>
 		</Filter>

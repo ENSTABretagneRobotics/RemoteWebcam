@@ -1,14 +1,14 @@
-rajouter param &bStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
+Bug pour webcam T100 si compilé avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
+L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
 
-mettre à jour aussi la version Android, est-ce qu'elle supporte les threads?
+mettre à jour la version Android, est-ce qu'elle peut supporter les threads, l'enregistrement, les timers...?
 
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
 UDP marche pas pour l'instant, essayer de comprendre...
 
-rotation, scale et flip au niveau serveur
-rajouter l'enregistrement video en local en HD, et envoi en résolution plus faible
+rajouter dans serveur l'envoi en résolution plus faible avec rotation, scale et flip 
 rotation, scale et flip ainsi que l'enregistrement supportés par le client dans AROVTest mais pas la résolution automatique, pour ce client c'est l'inverse...
 ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
 HSV?
@@ -34,6 +34,8 @@ level0 (in [0;255]);nbindex;index0;index1;...
 level1 (in [0;255]);nbindex;index0;index1;...
 ...
 
-palette de 2^8, 2^16 ou 2^24 (inutile) couleurs différentes utilisées dans l'image, on peut alors coder la couleur d'un pixel sur 1,2 ou 3(inutile) octets avec l'index de la couleur dans la palette.
+palette de 2^8, 2^16 ou 2^24 (inutile) couleurs différentes utilisées dans l'image, 
+on peut alors coder la couleur d'un pixel sur 1,2 ou 3(inutile) octets avec l'index de la couleur dans la palette.
 
-pour la compression temporelle, n'envoyer que les composantes couleurs qui ont significativement changées et leur index, si le nombre d'octets à transmettre devient proche de la taille de l'image complète on envoie l'image complète
+pour la compression temporelle, n'envoyer que les composantes couleurs qui ont significativement changées et leur index, 
+si le nombre d'octets à transmettre devient proche de la taille de l'image complète on envoie l'image complète

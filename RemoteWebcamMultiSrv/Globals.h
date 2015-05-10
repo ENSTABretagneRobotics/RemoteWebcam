@@ -12,14 +12,22 @@
 
 #include "OSMisc.h"
 #include "OSCriticalSection.h"
+#ifndef DISABLE_TIMER_RECORDING
+#include "OSTimer.h"
+#endif // DISABLE_TIMER_RECORDING
 #include "OSNet.h"
 #include "CvCore.h"
 
 // Use SOMAXCONN as the max number of simultaneous clients for multithreaded version...
 
 EXTERN_C CvCapture* webcam;
+EXTERN_C CvVideoWriter* videorecordfile;
+#ifndef DISABLE_TIMER_RECORDING
+EXTERN_C TIMER timer;
+#endif // DISABLE_TIMER_RECORDING
 EXTERN_C CHRONO chrono;
 EXTERN_C CvFont font;
+EXTERN_C CRITICAL_SECTION imageCS;
 EXTERN_C IplImage* image;
 EXTERN_C IplImage* previmage;
 EXTERN_C IplImage* detectimage;
@@ -44,5 +52,6 @@ EXTERN_C int fullimgperiod;
 EXTERN_C int encodequality; 
 EXTERN_C char encodetype[32];
 EXTERN_C int method; 
+EXTERN_C BOOL bDisableVideoRecording;
 
 #endif // GLOBALS_H

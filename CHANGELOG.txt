@@ -1,3 +1,6 @@
+8
+Added optional video recording in RemoteWebcamMultiSrv.
+
 7
 Added RemoteWebcamMultiSrv.
 
@@ -9,7 +12,7 @@ Added encodetype parameter to enable PNG.
 Added Visual Studio 2012 and OpenCV 2.4.9 support.
 Added captureperiod parameter and harmonization of configuration files.
 Added no compression method (2).
-First attempt to add UDP support.
+First attempt to add UDP support (does not work...).
 Minor corrections.
 
 4

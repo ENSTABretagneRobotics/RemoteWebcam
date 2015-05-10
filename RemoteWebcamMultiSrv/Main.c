@@ -21,6 +21,7 @@ int LoadConfig()
 	memset(encodetype, 0, sizeof(encodetype));
 	sprintf(encodetype, ".JPEG");
 	method = 0;
+	bDisableVideoRecording = FALSE;
 
 #ifdef __ANDROID__
 	file = fopen("/storage/sdcard0/download/RemoteWebcamMultiSrv.txt", "r");
@@ -55,6 +56,8 @@ int LoadConfig()
 		if (sscanf(line, "%31s", encodetype) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &method) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bDisableVideoRecording) != 1) printf("Invalid configuration file.\n");
 
 		//if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		//if (sscanf(line, "%lf", &val) != 1) printf("Invalid configuration file.\n");
@@ -354,6 +357,13 @@ int handlecli(SOCKET sockcli, void* pParam)
 
 void CleanUp(void)
 {
+	// Ensure the video recording is correctly stopped.
+#ifndef DISABLE_TIMER_RECORDING
+	DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+	videorecordfile = NULL;
+
 	bStop = TRUE;
 	StopChronoQuick(&chrono);
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
@@ -415,13 +425,26 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 
 	for (;;)
 	{
+		EnterCriticalSection(&imageCS);
 		image = cvQueryFrame(webcam);
+		LeaveCriticalSection(&imageCS);
 		if (!image)
 		{
 			printf("Error getting an image from the webcam.\n");
 			CleanUp();
 			return 0;
 		}
+
+#ifdef DISABLE_TIMER_RECORDING
+		if ((videorecordfile != NULL)&&(image != NULL))
+		{
+			if (!cvWriteFrame(videorecordfile, image)) 
+			{
+				printf("Error writing to a video file.\n");
+			}
+		}
+#endif // DISABLE_TIMER_RECORDING
+
 		cvCopy(image, detectimage, NULL);
 
 		if (
@@ -524,16 +547,19 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 		cvShowImage("Detection", detectimage);
 
 		c = cvWaitKey(captureperiod);
-		if ((char)c == 27)
-		{
-			CleanUp();
-			return 0;
-		}
+		if ((char)c == 27) break;
 #else
 		mSleep(captureperiod);
 #endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		if (bStop) break;
 	}
+
+	// Ensure the video recording is correctly stopped.
+#ifndef DISABLE_TIMER_RECORDING
+	DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+	videorecordfile = NULL;
 
 	bStop = TRUE;
 	StopChronoQuick(&chrono);
@@ -547,6 +573,24 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 
 	return 0;
 }
+
+#ifndef DISABLE_TIMER_RECORDING
+TIMERCALLBACK_RETURN_VALUE VideoRecordCallbackFunction(void* pParam, BOOLEAN b)
+{
+	UNREFERENCED_PARAMETER(pParam);
+	UNREFERENCED_PARAMETER(b);
+
+	EnterCriticalSection(&imageCS);
+	if ((videorecordfile != NULL)&&(image != NULL))
+	{
+		if (!cvWriteFrame(videorecordfile, image)) 
+		{
+			printf("Error writing to a video file.\n");
+		}
+	}
+	LeaveCriticalSection(&imageCS);
+}
+#endif // DISABLE_TIMER_RECORDING
 
 int quitall()
 {
@@ -574,6 +618,7 @@ int main(int argc, char* argv[])
 {
 #endif // defined(_WIN32) && !defined(_DEBUG)
 	THREAD_IDENTIFIER handlecamThreadId;
+	char videorecordfilename[MAX_BUF_LEN];
 
 	INIT_DEBUG;
 
@@ -621,12 +666,40 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
+	if (!bDisableVideoRecording)
+	{
+		sprintf(videorecordfilename, "video_%.64s.wmv", strtime_fns());
+		videorecordfile = cvCreateVideoWriter(videorecordfilename, 
+			CV_FOURCC('W','M','V','2'), 
+			1000.0/(double)captureperiod, 
+			cvSize(image->width,image->height), 
+			1);
+		if (!videorecordfile)
+		{
+			printf("Error creating a video file.\n");
+		}
+	}
+
+	InitCriticalSection(&imageCS);
+
+#ifndef DISABLE_TIMER_RECORDING
+	if (CreateTimer(&timer, VideoRecordCallbackFunction, NULL, captureperiod, captureperiod) != EXIT_SUCCESS)
+	{
+		printf("Error creating a timer.\n");
+	}
+#endif // DISABLE_TIMER_RECORDING
+
 	databuflen = image->imageSize+3*sizeof(unsigned int);
 	sharedbuflen = 0;
 	sharedbuf = (char*)calloc(databuflen, sizeof(char));
 	if (!sharedbuf)	
 	{
 		printf("calloc() failed.\n");
+#ifndef DISABLE_TIMER_RECORDING
+		DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+		DeleteCriticalSection(&imageCS);
+		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -639,6 +712,11 @@ int main(int argc, char* argv[])
 		(void)getchar();
 #endif // _DEBUG
 		free(sharedbuf);
+#ifndef DISABLE_TIMER_RECORDING
+		DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+		DeleteCriticalSection(&imageCS);
+		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -652,6 +730,11 @@ int main(int argc, char* argv[])
 #endif // _DEBUG
 		DeleteCriticalSection(&sharedbufCS);
 		free(sharedbuf);
+#ifndef DISABLE_TIMER_RECORDING
+		DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+		DeleteCriticalSection(&imageCS);
+		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -673,6 +756,11 @@ int main(int argc, char* argv[])
 		WaitForThread(handlecamThreadId);
 		DeleteCriticalSection(&sharedbufCS);
 		free(sharedbuf);
+#ifndef DISABLE_TIMER_RECORDING
+		DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+		DeleteCriticalSection(&imageCS);
+		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -682,6 +770,11 @@ int main(int argc, char* argv[])
 	WaitForThread(handlecamThreadId);
 	DeleteCriticalSection(&sharedbufCS);
 	free(sharedbuf);
+#ifndef DISABLE_TIMER_RECORDING
+	DeleteTimer(&timer, FALSE);
+#endif // DISABLE_TIMER_RECORDING
+	DeleteCriticalSection(&imageCS);
+	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 	cvReleaseCapture(&webcam);
 
 	return EXIT_SUCCESS;

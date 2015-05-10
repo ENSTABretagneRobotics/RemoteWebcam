@@ -95,7 +95,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\OSUtils\OSCriticalSection.c" />
+    <ClCompile Include="..\..\OSUtils\OSEv.c" />
     <ClCompile Include="..\..\OSUtils\OSThread.c" />
+    <ClCompile Include="..\..\OSUtils\OSTimer.c" />
     <ClCompile Include="Globals.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="..\..\OSUtils\OSCore.c" />
@@ -110,7 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\OSUtils\OSCriticalSection.h" />
+    <ClInclude Include="..\..\OSUtils\OSEv.h" />
     <ClInclude Include="..\..\OSUtils\OSThread.h" />
+    <ClInclude Include="..\..\OSUtils\OSTimer.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="..\..\OSUtils\OSCore.h" />
     <ClInclude Include="..\..\OSUtils\OSMisc.h" />

@@ -11,9 +11,6 @@ CFLAGS += -Wall -Winline -Wextra -g
 #CFLAGS += -Wall -O3
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img
 CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY -D _DEBUG_MESSAGES 
-CFLAGS += -D ENABLE_KILL_THREAD -D ENABLE_CANCEL_THREAD 
-CFLAGS += -D ENABLE_SET_THREAD_DEFAULT_PROCESSOR -D ENABLE_PRIORITY_HANDLING
-CFLAGS += -D ENABLE_WAIT_FOR_THREAD_TIMEOUT
 CFLAGS += -D OPENCV249
 LDFLAGS += -lopencv_core -lopencv_highgui -lopencv_imgproc
 LDFLAGS += -lpthread -lrt -lm 
@@ -25,19 +22,25 @@ default: $(PROGS)
 OSCore.o: ../OSUtils/OSCore.c ../OSUtils/OSCore.h
 	$(CC) $(CFLAGS) -c $<
 
-OSTime.o: ../OSUtils/OSTime.c ../OSUtils/OSTime.h OSCore.o
+OSCriticalSection.o: ../OSUtils/OSCriticalSection.c ../OSUtils/OSCriticalSection.h OSThread.o
+	$(CC) $(CFLAGS) -c $<
+
+OSEv.o: ../OSUtils/OSEv.c ../OSUtils/OSEv.h OSThread.o
 	$(CC) $(CFLAGS) -c $<
 
 OSMisc.o: ../OSUtils/OSMisc.c ../OSUtils/OSMisc.h OSTime.o
 	$(CC) $(CFLAGS) -c $<
 
+OSNet.o: ../OSUtils/OSNet.c ../OSUtils/OSNet.h OSThread.o
+	$(CC) $(CFLAGS) -c $<
+
 OSThread.o: ../OSUtils/OSThread.c ../OSUtils/OSThread.h OSTime.o
 	$(CC) $(CFLAGS) -c $<
 
-OSCriticalSection.o: ../OSUtils/OSCriticalSection.c ../OSUtils/OSCriticalSection.h OSThread.o
+OSTime.o: ../OSUtils/OSTime.c ../OSUtils/OSTime.h OSCore.o
 	$(CC) $(CFLAGS) -c $<
 
-OSNet.o: ../OSUtils/OSNet.c ../OSUtils/OSNet.h OSTime.o
+OSTimer.o: ../OSUtils/OSTimer.c ../OSUtils/OSTimer.h OSEv.o
 	$(CC) $(CFLAGS) -c $<
 
 ############################# Extensions #############################
@@ -59,13 +62,13 @@ CvDisp.o: ../Extensions/Img/CvDisp.c ../Extensions/Img/CvDisp.h CvCore.o
 
 ############################# PROGS #############################
 
-RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
 RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.c RemoteWebcamMultiSrv/Globals.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
-RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamMultiSrv/$@ $^
 
 RemoteWebcamSrv/Globals.o: RemoteWebcamSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o

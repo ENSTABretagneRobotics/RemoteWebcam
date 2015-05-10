@@ -10,8 +10,13 @@
 #include "Globals.h"
 
 CvCapture* webcam = NULL;
+CvVideoWriter* videorecordfile = NULL;
+#ifndef DISABLE_TIMER_RECORDING
+TIMER timer;
+#endif // DISABLE_TIMER_RECORDING
 CHRONO chrono;
 CvFont font;
+CRITICAL_SECTION imageCS;
 IplImage* image = NULL;
 IplImage* previmage = NULL;
 IplImage* detectimage = NULL;
@@ -36,3 +41,4 @@ int fullimgperiod = 0;
 int encodequality = 0; 
 char encodetype[32];
 int method = 0; 
+BOOL bDisableVideoRecording = FALSE;
