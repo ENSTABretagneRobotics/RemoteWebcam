@@ -332,7 +332,7 @@ int main(int argc, char* argv[])
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 1.0, 1.0, 1.0, 4, 8);
 
 	cvResizeWindow("Client", videoimgwidth, videoimgheight);
-	cvWaitKey(3000);
+	cvWaitKey(4000);
 
 	image = cvCreateImage(cvSize(videoimgwidth, videoimgheight), IPL_DEPTH_8U, 3);
 	if (image == NULL)

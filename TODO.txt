@@ -1,8 +1,7 @@
 Bug pour webcam T100 si compilé avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
+Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?
 L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast...
-
-mettre à jour la version Android, est-ce qu'elle peut supporter les threads, l'enregistrement, les timers...?
 
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
@@ -17,6 +16,7 @@ HSV?
 
 OLD
 
+Android, est-ce qu'elle peut supporter threads, enregistrement, timers?->threads partiels, pas vraiment timers ni même USE_OLD_TIMER, pas encore l'enregistrement mais peut-être avec OpenCV 3...
 créer fenêtre dans thread handlecam
 faire projet supplémentaire RemoteWebcamMultiSrv
 compatibilité mjpeg (surtout pour serveur)...

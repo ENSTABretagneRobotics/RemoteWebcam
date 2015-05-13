@@ -622,10 +622,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 int main(int argc, char* argv[])
 {
 #endif // defined(_WIN32) && !defined(_DEBUG)
+#endif // __ANDROID__
 	THREAD_IDENTIFIER handlecamThreadId;
 	char videorecordfilename[MAX_BUF_LEN];
 	int i = 0;
 
+#ifndef __ANDROID__
 	INIT_DEBUG;
 
 	UNREFERENCED_PARAMETER(argc);
@@ -684,10 +686,22 @@ int main(int argc, char* argv[])
 
 	if (!bDisableVideoRecording)
 	{
+#ifdef __ANDROID__
+		sprintf(videorecordfilename, "/storage/sdcard0/download/video_%.64s.avi", strtime_fns());
+		videorecordfile = cvCreateVideoWriter(videorecordfilename, 
+			CV_FOURCC('M','J','P','G'), // Might work starting with OpenCV 3 for Android?
+			//CV_FOURCC('D','I','V','X'), 
+			//CV_FOURCC('I', 'Y', 'U', 'V'), 
+#else
 		sprintf(videorecordfilename, "video_%.64s.wmv", strtime_fns());
 		videorecordfile = cvCreateVideoWriter(videorecordfilename, 
 			CV_FOURCC('W','M','V','2'), 
+#endif // __ANDROID__
+#ifdef DISABLE_TIMER_RECORDING
+			1000.0/(double)(captureperiod+20), // 20 ms is an approximation of the extra time spent for computations...
+#else
 			1000.0/(double)captureperiod, 
+#endif // DISABLE_TIMER_RECORDING
 			cvSize(image->width,image->height), 
 			1);
 		if (!videorecordfile)

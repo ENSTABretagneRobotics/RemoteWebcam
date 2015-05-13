@@ -1,3 +1,6 @@
+10
+Added limited Android support (no video recording).
+
 9
 Added limited MJPEG support to the client.
 

@@ -508,8 +508,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 int main(int argc, char* argv[])
 {
 #endif // defined(_WIN32) && !defined(_DEBUG)
+#endif // __ANDROID__
 	int i = 0;
 
+#ifndef __ANDROID__
 	INIT_DEBUG;
 
 	UNREFERENCED_PARAMETER(argc);
