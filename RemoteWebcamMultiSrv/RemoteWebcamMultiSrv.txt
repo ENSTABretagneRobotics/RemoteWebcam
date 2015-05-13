@@ -29,6 +29,6 @@
 % encodetype (.JPEG or .PNG)
 .JPEG
 % method (0, 1, 2, 3)
-1
+3
 % bDisableVideoRecording
 0

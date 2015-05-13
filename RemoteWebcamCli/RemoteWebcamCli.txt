@@ -7,14 +7,16 @@
 % cli1port
 4014
 % videoimgwidth
-320
+%320
+640
 % videoimgheight
-240
+%240
+480
 % captureperiod (in ms)
 5
 % timeout (in ms)
 5
 % bUDP
 0
-% bDynamicWindowResizing
+% bWindowResizedFromServer
 0

@@ -27,6 +27,6 @@ EXTERN_C int videoimgheight;
 EXTERN_C int captureperiod;
 EXTERN_C int timeout;
 EXTERN_C BOOL bUDP;
-EXTERN_C BOOL bDynamicWindowResizing;
+EXTERN_C BOOL bWindowResizedFromServer;
 
 #endif // GLOBALS_H

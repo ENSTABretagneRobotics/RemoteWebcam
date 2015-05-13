@@ -508,6 +508,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 int main(int argc, char* argv[])
 {
 #endif // defined(_WIN32) && !defined(_DEBUG)
+	int i = 0;
 
 	INIT_DEBUG;
 
@@ -546,6 +547,16 @@ int main(int argc, char* argv[])
 
 	cvSetCaptureProperty(webcam, CV_CAP_PROP_FRAME_WIDTH, videoimgwidth);
 	cvSetCaptureProperty(webcam, CV_CAP_PROP_FRAME_HEIGHT, videoimgheight);
+
+	// Sometimes the first images are bad, so wait a little bit and take
+	// several images in the beginning.
+	i = 0;
+	while (i < 2)
+	{
+		mSleep(500);
+		image = cvQueryFrame(webcam);
+		i++;
+	}
 
 	image = cvQueryFrame(webcam);
 	if (!image)

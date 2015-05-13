@@ -1,3 +1,6 @@
+9
+Added limited MJPEG support to the client.
+
 8
 Added optional video recording in RemoteWebcamMultiSrv.
 

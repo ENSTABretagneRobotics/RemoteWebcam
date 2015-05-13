@@ -298,29 +298,34 @@ int handlecli(SOCKET sockcli, void* pParam)
 					if (!bInitDone)
 					{
 						// Receive the GET request, but do not analyze it...
-						memset(httpbuf, 0, sizeof(httpbuf));
-						if (recv(sockcli, httpbuf, sizeof(httpbuf), 0) <= 0)
+						tv.tv_sec = (long)(timeout/1000);
+						tv.tv_usec = (long)((timeout%1000)*1000);
+						if (waitforsocket(sockcli, tv) == EXIT_SUCCESS)
 						{
-							printf("recv() failed.\n");
-							free(sendbuf);
-							return EXIT_FAILURE;
-						}
-						memset(httpbuf, 0, sizeof(httpbuf));
-						sprintf(httpbuf, 
-							"HTTP/1.1 200 OK\r\n"
-							"Server: RemoteWebcamMultiSrv\r\n"
-							//"Connection: close\r\n"
-							//"Max-Age: 0\r\n"
-							//"Expires: 0\r\n"
-							//"Cache-Control: no-cache, private, no-store, must-revalidate, pre-check = 0, post-check = 0, max-age = 0\r\n"
-							//"Pragma: no-cache\r\n"
-							"Content-Type: multipart/x-mixed-replace; boundary=--boundary\r\n"
-							//"Media-type: image/jpeg\r\n"
-							"\r\n");
-						if (sendall(sockcli, httpbuf, strlen(httpbuf)) != EXIT_SUCCESS)
-						{
-							free(sendbuf);
-							return EXIT_FAILURE;
+							memset(httpbuf, 0, sizeof(httpbuf));
+							if (recv(sockcli, httpbuf, sizeof(httpbuf), 0) <= 0)
+							{
+								printf("recv() failed.\n");
+								free(sendbuf);
+								return EXIT_FAILURE;
+							}
+							memset(httpbuf, 0, sizeof(httpbuf));
+							sprintf(httpbuf, 
+								"HTTP/1.1 200 OK\r\n"
+								"Server: RemoteWebcamMultiSrv\r\n"
+								//"Connection: close\r\n"
+								//"Max-Age: 0\r\n"
+								//"Expires: 0\r\n"
+								//"Cache-Control: no-cache, private, no-store, must-revalidate, pre-check = 0, post-check = 0, max-age = 0\r\n"
+								//"Pragma: no-cache\r\n"
+								"Content-Type: multipart/x-mixed-replace; boundary=--boundary\r\n"
+								//"Media-type: image/jpeg\r\n"
+								"\r\n");
+							if (sendall(sockcli, httpbuf, strlen(httpbuf)) != EXIT_SUCCESS)
+							{
+								free(sendbuf);
+								return EXIT_FAILURE;
+							}
 						}
 						bInitDone = TRUE;
 					}
@@ -619,6 +624,7 @@ int main(int argc, char* argv[])
 #endif // defined(_WIN32) && !defined(_DEBUG)
 	THREAD_IDENTIFIER handlecamThreadId;
 	char videorecordfilename[MAX_BUF_LEN];
+	int i = 0;
 
 	INIT_DEBUG;
 
@@ -657,6 +663,16 @@ int main(int argc, char* argv[])
 
 	cvSetCaptureProperty(webcam, CV_CAP_PROP_FRAME_WIDTH, videoimgwidth);
 	cvSetCaptureProperty(webcam, CV_CAP_PROP_FRAME_HEIGHT, videoimgheight);
+
+	// Sometimes the first images are bad, so wait a little bit and take
+	// several images in the beginning.
+	i = 0;
+	while (i < 2)
+	{
+		mSleep(500);
+		image = cvQueryFrame(webcam);
+		i++;
+	}
 
 	image = cvQueryFrame(webcam);
 	if (!image)
@@ -739,7 +755,7 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	mSleep(2000);
+	mSleep(1000);
 
 	if (
 		(bUDP&&(LaunchUDPSrv(srvport, handlecli, NULL) != EXIT_SUCCESS))||
