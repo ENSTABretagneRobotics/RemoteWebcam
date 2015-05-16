@@ -12,6 +12,12 @@
 40
 % timeout (in ms)
 5
+% rotation angle (in deg)
+0
+% scale
+1
+% bFlip
+0
 % bUDP
 0
 % pixcolorchgthreshold (in [0,255], the lower is the better quality, but use more bandwidth)

@@ -12,7 +12,7 @@
 
 #include "OSMisc.h"
 #include "OSNet.h"
-#include "CvUtils.h"
+#include "CvCore.h"
 
 EXTERN_C SOCKET s1;
 EXTERN_C CvFont font;

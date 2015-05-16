@@ -12,6 +12,7 @@
 CvCapture* webcam = NULL;
 CHRONO chrono;
 CvFont font;
+IplImage* frame = NULL;
 IplImage* image = NULL;
 IplImage* previmage = NULL;
 IplImage* detectimage = NULL;
@@ -25,6 +26,9 @@ int videoimgwidth = 0;
 int videoimgheight = 0; 
 int captureperiod = 0;
 int timeout = 0;
+double angle = 0;
+double scale = 1;
+int bFlip = FALSE;
 BOOL bUDP = FALSE;
 int pixcolorchgthreshold = 0; 
 int timecompressiondividerthreshold = 0; 

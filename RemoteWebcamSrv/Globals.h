@@ -19,6 +19,7 @@
 EXTERN_C CvCapture* webcam;
 EXTERN_C CHRONO chrono;
 EXTERN_C CvFont font;
+EXTERN_C IplImage* frame;
 EXTERN_C IplImage* image;
 EXTERN_C IplImage* previmage;
 EXTERN_C IplImage* detectimage;
@@ -32,6 +33,9 @@ EXTERN_C int videoimgwidth;
 EXTERN_C int videoimgheight; 
 EXTERN_C int captureperiod;
 EXTERN_C int timeout;
+EXTERN_C double angle;
+EXTERN_C double scale;
+EXTERN_C int bFlip;
 EXTERN_C BOOL bUDP;
 EXTERN_C int pixcolorchgthreshold; 
 EXTERN_C int timecompressiondividerthreshold; 

@@ -4,6 +4,7 @@ int LoadConfig()
 {
 	FILE* file = NULL;
 	char line[MAX_BUF_LEN];
+	double d0 = 0;
 
 	// Default values.
 	camid = 0;
@@ -13,6 +14,9 @@ int LoadConfig()
 	videoimgheight = 480; 
 	captureperiod = 100;
 	timeout = 0;
+	angle = 0*M_PI/180.0;
+	scale = 1;
+	bFlip = 0;
 	bUDP = FALSE;
 	pixcolorchgthreshold = 3; 
 	timecompressiondividerthreshold = 4;
@@ -42,6 +46,13 @@ int LoadConfig()
 		if (sscanf(line, "%d", &captureperiod) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%lf", &d0) != 1) printf("Invalid configuration file.\n");
+		angle = d0*M_PI/180.0;
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%lf", &scale) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bFlip) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &bUDP) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
@@ -383,6 +394,8 @@ void CleanUp(void)
 
 THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 {
+	double m[6]; // For rotation...
+	CvMat M = cvMat(2, 3, CV_64F, m); // For rotation...
 	int nbBytes = 0;
 	char szText[MAX_BUF_LEN];
 	unsigned int val = 0;
@@ -430,15 +443,36 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 
 	for (;;)
 	{
-		EnterCriticalSection(&imageCS);
-		image = cvQueryFrame(webcam);
-		LeaveCriticalSection(&imageCS);
-		if (!image)
+		frame = cvQueryFrame(webcam);
+		if (!frame)
 		{
 			printf("Error getting an image from the webcam.\n");
 			CleanUp();
 			return 0;
 		}
+		EnterCriticalSection(&imageCS);
+		if ((angle == 0)&&(scale == 1))
+		{
+			if (bFlip) cvFlip(frame, image, 1); else cvCopy(frame, image, 0);
+		}
+		else
+		{
+			//// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
+			//m[0] = cos(pVideo->angle);
+			//m[1] = sin(pVideo->angle);
+			//m[3] = -m[1];
+			//m[4] = m[0];
+			//m[2] = pVideo->frame->width*0.5;  
+			//m[5] = pVideo->frame->height*0.5;  
+			//cvGetQuadrangleSubPix(pVideo->frame, img, &M);
+
+			cvWarpAffine(frame, image, 
+				cv2DRotationMatrix(cvPoint2D32f(frame->width*0.5,frame->height*0.5), -angle*180.0/M_PI, scale, &M), 
+				CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+
+			if (bFlip) cvFlip(image, NULL, 1);
+		}
+		LeaveCriticalSection(&imageCS);
 
 #ifdef DISABLE_TIMER_RECORDING
 		if ((videorecordfile != NULL)&&(image != NULL))
@@ -622,7 +656,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 int main(int argc, char* argv[])
 {
 #endif // defined(_WIN32) && !defined(_DEBUG)
-#endif // __ANDROID__
+#endif // __ANDROID__	
+	double m[6]; // For rotation...
+	CvMat M = cvMat(2, 3, CV_64F, m); // For rotation...
 	THREAD_IDENTIFIER handlecamThreadId;
 	char videorecordfilename[MAX_BUF_LEN];
 	int i = 0;
@@ -672,16 +708,46 @@ int main(int argc, char* argv[])
 	while (i < 2)
 	{
 		mSleep(500);
-		image = cvQueryFrame(webcam);
+		frame = cvQueryFrame(webcam);
 		i++;
 	}
 
-	image = cvQueryFrame(webcam);
-	if (!image)
+	frame = cvQueryFrame(webcam);
+	if (!frame)
 	{
 		printf("Error getting an image from the webcam.\n");
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
+	}
+
+	image = cvCloneImage(frame);
+	if (!image)	
+	{
+		printf("Error copying an image.\n");
+		cvReleaseCapture(&webcam);
+		return EXIT_FAILURE;
+	}
+
+	if ((angle == 0)&&(scale == 1))
+	{
+		if (bFlip) cvFlip(frame, image, 1); else cvCopy(frame, image, 0);
+	}
+	else
+	{
+		//// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
+		//m[0] = cos(pVideo->angle);
+		//m[1] = sin(pVideo->angle);
+		//m[3] = -m[1];
+		//m[4] = m[0];
+		//m[2] = pVideo->frame->width*0.5;  
+		//m[5] = pVideo->frame->height*0.5;  
+		//cvGetQuadrangleSubPix(pVideo->frame, img, &M);
+
+		cvWarpAffine(frame, image, 
+			cv2DRotationMatrix(cvPoint2D32f(frame->width*0.5,frame->height*0.5), -angle*180.0/M_PI, scale, &M), 
+			CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+
+		if (bFlip) cvFlip(image, NULL, 1);
 	}
 
 	if (!bDisableVideoRecording)
@@ -730,6 +796,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -747,6 +814,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -765,6 +833,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -791,6 +860,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
@@ -805,6 +875,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 	DeleteCriticalSection(&imageCS);
 	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+	cvReleaseImage(&image);
 	cvReleaseCapture(&webcam);
 
 	return EXIT_SUCCESS;

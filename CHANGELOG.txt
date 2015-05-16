@@ -1,3 +1,6 @@
+11
+Added rotation, scale and flip on the server side. Note that rotation, scale and flip as well as recording are supported by the client included in AROVTest but not dynamic resolution changes, for this client it is the contrary.
+
 10
 Added limited Android support (no video recording).
 
