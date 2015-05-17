@@ -1,5 +1,5 @@
 Bug pour webcam T100 si compilé avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
-Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?
+Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?->cvDecodeImage() very slow depending on computer and configuration?
 L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast signed/unsigned and greater size...
 
