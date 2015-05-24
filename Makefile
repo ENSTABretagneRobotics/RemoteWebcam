@@ -69,7 +69,7 @@ RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.c RemoteWebcamMultiSrv/Gl
 	$(CC) $(CFLAGS) -c $< -o $@
 
 RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamMultiSrv/$@ $^
+	$(CC) $(CFLAGS) -o RemoteWebcamMultiSrv/$@ $^ $(LDFLAGS)
 
 RemoteWebcamSrv/Globals.o: RemoteWebcamSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -78,7 +78,7 @@ RemoteWebcamSrv/Main.o: RemoteWebcamSrv/Main.c RemoteWebcamSrv/Globals.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
 RemoteWebcamSrv: RemoteWebcamSrv/Main.o RemoteWebcamSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamSrv/$@ $^
+	$(CC) $(CFLAGS) -o RemoteWebcamSrv/$@ $^ $(LDFLAGS)
 
 RemoteWebcamCli/Globals.o: RemoteWebcamCli/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -87,7 +87,7 @@ RemoteWebcamCli/Main.o: RemoteWebcamCli/Main.c RemoteWebcamCli/Globals.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
 RemoteWebcamCli: RemoteWebcamCli/Main.o RemoteWebcamCli/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o RemoteWebcamCli/$@ $^
+	$(CC) $(CFLAGS) -o RemoteWebcamCli/$@ $^ $(LDFLAGS)
 
 clean:
 	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
