@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EFD0D1D-2A95-49D3-A330-74C33D993ADE}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.txt = CHANGELOG.txt
@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamSrv", "RemoteWebcamSrv\RemoteWebcamSrv.vcxproj", "{B68C561A-794B-4083-B2F8-7078E75707C0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamSrv", "RemoteWebcamSrv\RemoteWebcamSrv.vcproj", "{B68C561A-794B-4083-B2F8-7078E75707C0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamCli", "RemoteWebcamCli\RemoteWebcamCli.vcxproj", "{1EECE22D-82AE-4112-831A-A7CC68F6E39F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamCli", "RemoteWebcamCli\RemoteWebcamCli.vcproj", "{1EECE22D-82AE-4112-831A-A7CC68F6E39F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamMultiSrv", "RemoteWebcamMultiSrv\RemoteWebcamMultiSrv.vcxproj", "{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteWebcamMultiSrv", "RemoteWebcamMultiSrv\RemoteWebcamMultiSrv.vcproj", "{CC16AD72-661C-48DC-9FA2-4DD265640B2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Debug|Win32.Build.0 = Debug|Win32
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Release|Win32.ActiveCfg = Release|Win32
 		{1EECE22D-82AE-4112-831A-A7CC68F6E39F}.Release|Win32.Build.0 = Release|Win32
-		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Debug|Win32.Build.0 = Debug|Win32
-		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Release|Win32.ActiveCfg = Release|Win32
-		{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}.Release|Win32.Build.0 = Release|Win32
+		{CC16AD72-661C-48DC-9FA2-4DD265640B2C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CC16AD72-661C-48DC-9FA2-4DD265640B2C}.Debug|Win32.Build.0 = Debug|Win32
+		{CC16AD72-661C-48DC-9FA2-4DD265640B2C}.Release|Win32.ActiveCfg = Release|Win32
+		{CC16AD72-661C-48DC-9FA2-4DD265640B2C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

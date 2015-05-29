@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EE8185B7-8DB8-4C71-A418-671E4CC9D42A}</ProjectGuid>
+    <ProjectGuid>{CC16AD72-661C-48DC-9FA2-4DD265640B2C}</ProjectGuid>
     <RootNamespace>RemoteWebcamMultiSrv</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
