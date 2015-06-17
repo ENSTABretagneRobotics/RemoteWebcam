@@ -34,5 +34,5 @@
 %9
 % encodetype (.JPEG or .PNG)
 .JPEG
-% method (0, 1, 2, 3)
+% method (0, 1 : static and dynamic compression based on movement detection, 2 : no compression, 3 : MJPEG (compatible with e.g. VLC, Firefox, Chrome (modify mjpeg.html to test)))
 1
