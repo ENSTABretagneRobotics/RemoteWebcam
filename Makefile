@@ -7,8 +7,8 @@
 PROGS = RemoteWebcamMultiSrv RemoteWebcamSrv RemoteWebcamCli
 
 CC = gcc
-CFLAGS += -Wall -Winline -Wextra -g
-#CFLAGS += -Wall -O3
+CFLAGS += -Wall -Winline -Wextra -g -fpermissive
+#CFLAGS += -Wall -O3 -fpermissive
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img
 CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY -D _DEBUG_MESSAGES 
 CFLAGS += -D OPENCV249
