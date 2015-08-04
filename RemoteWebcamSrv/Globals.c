@@ -20,8 +20,8 @@ char* databuf = NULL;
 int encodeparams[2];
 BOOL bStop = FALSE;
 
-int camid = 0;
-char srvport[MAX_BUF_LEN];
+char szDevPath[256];
+char srvport[256];
 int videoimgwidth = 0; 
 int videoimgheight = 0; 
 int captureperiod = 0;

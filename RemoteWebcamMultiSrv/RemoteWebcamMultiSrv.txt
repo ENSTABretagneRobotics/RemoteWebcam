@@ -1,4 +1,4 @@
-% camid (0, 1, 2...)
+% camid (0..9) or a video filename
 0
 % srvport
 4014

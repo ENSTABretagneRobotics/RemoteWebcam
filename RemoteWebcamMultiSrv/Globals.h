@@ -40,8 +40,8 @@ EXTERN_C CRITICAL_SECTION sharedbufCS;
 EXTERN_C int encodeparams[2];
 EXTERN_C BOOL bStop;
 
-EXTERN_C int camid;
-EXTERN_C char srvport[MAX_BUF_LEN];
+EXTERN_C char szDevPath[256];
+EXTERN_C char srvport[256];
 EXTERN_C int videoimgwidth; 
 EXTERN_C int videoimgheight; 
 EXTERN_C int captureperiod;

@@ -3,11 +3,12 @@
 int LoadConfig()
 {
 	FILE* file = NULL;
-	char line[MAX_BUF_LEN];
+	char line[256];
 	double d0 = 0;
 
 	// Default values.
-	camid = 0;
+	memset(szDevPath, 0, sizeof(szDevPath));
+	sprintf(szDevPath, "0");
 	memset(srvport, 0, sizeof(srvport));
 	sprintf(srvport, "27254");
 	videoimgwidth = 640; 
@@ -34,7 +35,7 @@ int LoadConfig()
 	if (file != NULL)
 	{
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%d", &camid) != 1) printf("Invalid configuration file.\n");
+		if (sscanf(line, "[^\n]%255s", szDevPath) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%255s", srvport) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
@@ -260,7 +261,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 	double m[6]; // For rotation...
 	CvMat M = cvMat(2, 3, CV_64F, m); // For rotation...
 	int nbBytes = 0;
-	char szText[MAX_BUF_LEN];
+	char szText[256];
 	unsigned int val = 0;
 	CvMat* mat = NULL;
 	BOOL bForceSendFullImg = TRUE;
@@ -574,9 +575,14 @@ int main(int argc, char* argv[])
 
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
-	//webcam = cvCreateFileCapture("SAUCISSE wall ball - VIDEO2605.mp4");
-	//webcam = cvCreateFileCapture("test3.wmv");
-	webcam = cvCreateCameraCapture(camid);
+	if ((strlen(szDevPath) == 1)&&(isdigit((unsigned char)szDevPath[0])))
+	{
+		webcam = cvCreateCameraCapture(atoi(szDevPath));
+	}
+	else
+	{
+		webcam = cvCreateFileCapture(szDevPath);
+	}
 	if (!webcam) 
 	{
 		printf("Error opening the webcam.\n");
