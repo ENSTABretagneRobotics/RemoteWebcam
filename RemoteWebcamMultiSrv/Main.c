@@ -15,8 +15,10 @@ int LoadConfig()
 	videoimgheight = 480; 
 	captureperiod = 100;
 	timeout = 0;
+	bForceSoftwareResize = TRUE;
+	hscale = 1;
+	vscale = 1;
 	angle = 0*M_PI/180.0;
-	scale = 1;
 	bFlip = 0;
 	bUDP = FALSE;
 	pixcolorchgthreshold = 3; 
@@ -48,10 +50,14 @@ int LoadConfig()
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bForceSoftwareResize) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%lf", &hscale) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%lf", &vscale) != 1) printf("Invalid configuration file.\n");
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%lf", &d0) != 1) printf("Invalid configuration file.\n");
 		angle = d0*M_PI/180.0;
-		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%lf", &scale) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &bFlip) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
@@ -70,9 +76,6 @@ int LoadConfig()
 		if (sscanf(line, "%d", &method) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &bDisableVideoRecording) != 1) printf("Invalid configuration file.\n");
-
-		//if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		//if (sscanf(line, "%lf", &val) != 1) printf("Invalid configuration file.\n");
 
 		if (fclose(file) != EXIT_SUCCESS) printf("fclose() failed.\n");
 	}
@@ -95,6 +98,16 @@ int LoadConfig()
 	{
 		printf("Invalid parameter : captureperiod.\n");
 		captureperiod = 100;
+	}
+	if (hscale == 0)
+	{
+		printf("Invalid parameter : hscale.\n");
+		hscale = 1;
+	}
+	if (vscale == 0)
+	{
+		printf("Invalid parameter : vscale.\n");
+		vscale = 1;
 	}
 	if (timecompressiondividerthreshold < 1)
 	{
@@ -451,25 +464,36 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 			CleanUp();
 			return 0;
 		}
+		if (bForceSoftwareResize) cvResize(frame, resizedframe, CV_INTER_LINEAR);
+		else resizedframe = frame;
+
 		EnterCriticalSection(&imageCS);
-		if ((angle == 0)&&(scale == 1))
+		if ((hscale == 1)&&(vscale == 1)&&(angle == 0))
 		{
-			if (bFlip) cvFlip(frame, image, 1); else cvCopy(frame, image, 0);
+			if (bFlip) cvFlip(resizedframe, image, 1); else cvCopy(resizedframe, image, 0);
 		}
 		else
 		{
-			//// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
-			//m[0] = cos(pVideo->angle);
-			//m[1] = sin(pVideo->angle);
-			//m[3] = -m[1];
-			//m[4] = m[0];
-			//m[2] = pVideo->frame->width*0.5;  
-			//m[5] = pVideo->frame->height*0.5;  
-			//cvGetQuadrangleSubPix(pVideo->frame, img, &M);
+			// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
+			//double hscale = 0.5, vscale = 1.33*0.5;
+			m[0] = cos(angle)/hscale;
+			m[1] = sin(angle)/hscale;
+			m[3] = -sin(angle)/vscale;
+			m[4] = cos(angle)/vscale;
+			m[2] = (1-cos(angle)/hscale)*resizedframe->width*0.5-(sin(angle)/hscale)*resizedframe->height*0.5;  
+			m[5] = (sin(angle)/vscale)*resizedframe->width*0.5+(1-cos(angle)/vscale)*resizedframe->height*0.5;
+			cvWarpAffine(resizedframe, image, &M, CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS+CV_WARP_INVERSE_MAP, cvScalarAll(0));
 
-			cvWarpAffine(frame, image, 
-				cv2DRotationMatrix(cvPoint2D32f(frame->width*0.5,frame->height*0.5), -angle*180.0/M_PI, scale, &M), 
-				CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+			//double hscale = 1.33*0.5, vscale = 0.5;
+			//m[0] = hscale*cos(-angle);
+			//m[1] = hscale*sin(-angle);
+			//m[3] = vscale*-sin(-angle);
+			//m[4] = vscale*cos(-angle);
+			//m[2] = (1-hscale*cos(-angle))*resizedframe->width*0.5-hscale*sin(-angle)*resizedframe->height*0.5;  
+			//m[5] = vscale*sin(-angle)*resizedframe->width*0.5+(1-vscale*cos(-angle))*resizedframe->height*0.5;
+			////cvGetQuadrangleSubPix(resizedframe, image, &M);
+			////cv2DRotationMatrix(cvPoint2D32f(resizedframe->width*0.5,resizedframe->height*0.5), -angle*180.0/M_PI, scale, &M);
+			//cvWarpAffine(resizedframe, image, &M, CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
 
 			if (bFlip) cvFlip(image, NULL, 1);
 		}
@@ -726,32 +750,54 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	image = cvCloneImage(frame);
+	if (bForceSoftwareResize) 
+	{
+		resizedframe = cvCreateImage(cvSize(videoimgwidth,videoimgheight), frame->depth, frame->nChannels);
+		if (!resizedframe)	
+		{
+			printf("Error creating an image.\n");
+			cvReleaseCapture(&webcam);
+			return EXIT_FAILURE;
+		}
+		cvResize(frame, resizedframe, CV_INTER_LINEAR);
+	}
+	else resizedframe = frame;
+
+	image = cvCloneImage(resizedframe);
 	if (!image)	
 	{
 		printf("Error copying an image.\n");
+		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
 	}
 
-	if ((angle == 0)&&(scale == 1))
+	if ((angle == 0)&&(hscale == 1)&&(vscale == 1))
 	{
-		if (bFlip) cvFlip(frame, image, 1); else cvCopy(frame, image, 0);
+		if (bFlip) cvFlip(resizedframe, image, 1); else cvCopy(resizedframe, image, 0);
 	}
 	else
 	{
-		//// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
-		//m[0] = cos(pVideo->angle);
-		//m[1] = sin(pVideo->angle);
-		//m[3] = -m[1];
-		//m[4] = m[0];
-		//m[2] = pVideo->frame->width*0.5;  
-		//m[5] = pVideo->frame->height*0.5;  
-		//cvGetQuadrangleSubPix(pVideo->frame, img, &M);
+		// Create a map_matrix, where the left 2x2 matrix is the transform and the right 2x1 is the dimensions.
+		//double hscale = 0.5, vscale = 1.33*0.5;
+		m[0] = cos(angle)/hscale;
+		m[1] = sin(angle)/hscale;
+		m[3] = -sin(angle)/vscale;
+		m[4] = cos(angle)/vscale;
+		m[2] = (1-cos(angle)/hscale)*resizedframe->width*0.5-(sin(angle)/hscale)*resizedframe->height*0.5;  
+		m[5] = (sin(angle)/vscale)*resizedframe->width*0.5+(1-cos(angle)/vscale)*resizedframe->height*0.5;
+		cvWarpAffine(resizedframe, image, &M, CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS+CV_WARP_INVERSE_MAP, cvScalarAll(0));
 
-		cvWarpAffine(frame, image, 
-			cv2DRotationMatrix(cvPoint2D32f(frame->width*0.5,frame->height*0.5), -angle*180.0/M_PI, scale, &M), 
-			CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+		//double hscale = 1.33*0.5, vscale = 0.5;
+		//m[0] = hscale*cos(-angle);
+		//m[1] = hscale*sin(-angle);
+		//m[3] = vscale*-sin(-angle);
+		//m[4] = vscale*cos(-angle);
+		//m[2] = (1-hscale*cos(-angle))*resizedframe->width*0.5-hscale*sin(-angle)*resizedframe->height*0.5;  
+		//m[5] = vscale*sin(-angle)*resizedframe->width*0.5+(1-vscale*cos(-angle))*resizedframe->height*0.5;
+		////cvGetQuadrangleSubPix(resizedframe, image, &M);
+		////cv2DRotationMatrix(cvPoint2D32f(resizedframe->width*0.5,resizedframe->height*0.5), -angle*180.0/M_PI, scale, &M);
+		//cvWarpAffine(resizedframe, image, &M, CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
 
 		if (bFlip) cvFlip(image, NULL, 1);
 	}
@@ -802,6 +848,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
@@ -820,6 +867,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
@@ -839,6 +887,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
@@ -866,6 +915,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseImage(&image);
 		cvReleaseCapture(&webcam);
 		return EXIT_FAILURE;
@@ -881,6 +931,7 @@ int main(int argc, char* argv[])
 #endif // DISABLE_TIMER_RECORDING
 	DeleteCriticalSection(&imageCS);
 	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
+	if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 	cvReleaseImage(&image);
 	cvReleaseCapture(&webcam);
 

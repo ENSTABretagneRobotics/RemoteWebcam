@@ -12,10 +12,14 @@
 40
 % timeout (in ms)
 5
+% bForceSoftwareResize
+1
+% hscale
+1
+% vscale
+1
 % rotation angle (in deg)
 0
-% scale
-1
 % bFlip
 0
 % bUDP

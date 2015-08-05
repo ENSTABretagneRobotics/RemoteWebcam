@@ -37,9 +37,6 @@ int LoadConfig()
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &bWindowResizedFromServer) != 1) printf("Invalid configuration file.\n");
 
-		//if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		//if (sscanf(line, "%lf", &val) != 1) printf("Invalid configuration file.\n");
-
 		if (fclose(file) != EXIT_SUCCESS) printf("fclose() failed.\n");
 	}
 	else

@@ -20,6 +20,7 @@ EXTERN_C IplImage* image;
 EXTERN_C char* databuf;
 EXTERN_C BOOL bError;
 
+// Parameters.
 EXTERN_C char cli1address[MAX_BUF_LEN];
 EXTERN_C char cli1port[MAX_BUF_LEN];
 EXTERN_C int videoimgwidth; 
