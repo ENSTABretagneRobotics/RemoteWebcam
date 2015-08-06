@@ -1,3 +1,8 @@
+14
+Minor modifications.
+Moved bWindowResizedFromServer in RemoteWebcamCli.txt.
+Harmonization of RemoteWebcamCli w.r.t. Video in UxVCtrl.
+
 13
 Added bForceSoftwareResize, hscale, vscale parameters in place of scale for the server.
 

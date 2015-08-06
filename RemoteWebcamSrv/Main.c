@@ -15,12 +15,12 @@ int LoadConfig()
 	videoimgheight = 480; 
 	captureperiod = 100;
 	timeout = 0;
-	bForceSoftwareResize = TRUE;
+	bForceSoftwareResize = 1;
 	hscale = 1;
 	vscale = 1;
 	angle = 0*M_PI/180.0;
 	bFlip = 0;
-	bUDP = FALSE;
+	bUDP = 0;
 	pixcolorchgthreshold = 3; 
 	timecompressiondividerthreshold = 4;
 	fullimgperiod = 1000; 
@@ -73,7 +73,6 @@ int LoadConfig()
 		if (sscanf(line, "%31s", encodetype) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &method) != 1) printf("Invalid configuration file.\n");
-
 		if (fclose(file) != EXIT_SUCCESS) printf("fclose() failed.\n");
 	}
 	else

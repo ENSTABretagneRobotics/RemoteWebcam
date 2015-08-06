@@ -15,7 +15,7 @@
 5
 % timeout (in ms)
 5
-% bUDP
-0
 % bWindowResizedFromServer
+0
+% bUDP
 0

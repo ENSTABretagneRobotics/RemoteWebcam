@@ -14,8 +14,8 @@ int LoadConfig()
 	videoimgheight = 480; 
 	captureperiod = 5;
 	timeout = 0;
-	bUDP = FALSE;
-	bWindowResizedFromServer = FALSE;
+	bWindowResizedFromServer = 0;
+	bUDP = 0;
 
 	file = fopen("RemoteWebcamCli.txt", "r");
 	if (file != NULL)
@@ -33,10 +33,9 @@ int LoadConfig()
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &timeout) != 1) printf("Invalid configuration file.\n");
 		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
-		if (sscanf(line, "%d", &bUDP) != 1) printf("Invalid configuration file.\n");
-		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
 		if (sscanf(line, "%d", &bWindowResizedFromServer) != 1) printf("Invalid configuration file.\n");
-
+		if (fgets3(file, line, sizeof(line)) == NULL) printf("Invalid configuration file.\n");
+		if (sscanf(line, "%d", &bUDP) != 1) printf("Invalid configuration file.\n");
 		if (fclose(file) != EXIT_SUCCESS) printf("fclose() failed.\n");
 	}
 	else
@@ -74,6 +73,7 @@ int recvdecode(void)
 	CvMat* mat = NULL;
 	IplImage* imagenew = image;
 	char* databufnew = databuf;
+	int curframewidth = image->width, curframeheight = image->height;
 
 	if (recvall(s1, (char*)header, 3*sizeof(unsigned int)) != EXIT_SUCCESS)
 	{
@@ -120,12 +120,12 @@ int recvdecode(void)
 		cvReleaseMat(&mat);
 
 		// Resolution changed by server.
-		if ((image->width != videoimgwidth)||(image->height != videoimgheight))
+		if ((image->width != curframewidth)||(image->height != curframeheight))
 		{
-			videoimgwidth = image->width;
-			videoimgheight = image->height;
+			curframewidth = image->width;
+			curframeheight = image->height;
 
-			if (bWindowResizedFromServer) cvResizeWindow("Client", videoimgwidth, videoimgheight);
+			if (bWindowResizedFromServer) cvResizeWindow("Client", curframewidth, curframeheight);
 
 			databufnew = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 			if (!databufnew)	
@@ -202,12 +202,12 @@ int recvdecode(void)
 		cvReleaseMat(&mat);
 
 		// Resolution changed by server.
-		if ((image->width != videoimgwidth)||(image->height != videoimgheight))
+		if ((image->width != curframewidth)||(image->height != curframeheight))
 		{
-			videoimgwidth = image->width;
-			videoimgheight = image->height;
+			curframewidth = image->width;
+			curframeheight = image->height;
 
-			if (bWindowResizedFromServer) cvResizeWindow("Client", videoimgwidth, videoimgheight);
+			if (bWindowResizedFromServer) cvResizeWindow("Client", curframewidth, curframeheight);
 
 			databufnew = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 			if (!databufnew)	
@@ -230,13 +230,13 @@ int recvdecode(void)
 			return EXIT_FAILURE;
 		}
 
-		videoimgwidth = header[1];
-		videoimgheight = header[2];
+		curframewidth = header[1];
+		curframeheight = header[2];
 
 		// Resolution changed by server.
-		if ((image->width != videoimgwidth)||(image->height != videoimgheight))
+		if ((image->width != curframewidth)||(image->height != curframeheight))
 		{
-			imagenew = cvCreateImage(cvSize(videoimgwidth, videoimgheight), IPL_DEPTH_8U, 3);
+			imagenew = cvCreateImage(cvSize(curframewidth, curframeheight), IPL_DEPTH_8U, 3);
 			if (imagenew == NULL)
 			{
 				printf("cvCreateImage() failed.\n");
@@ -245,7 +245,7 @@ int recvdecode(void)
 			cvReleaseImage(&image);
 			image = imagenew;
 
-			if (bWindowResizedFromServer) cvResizeWindow("Client", videoimgwidth, videoimgheight);
+			if (bWindowResizedFromServer) cvResizeWindow("Client", curframewidth, curframeheight);
 
 			databufnew = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 			if (!databufnew)	

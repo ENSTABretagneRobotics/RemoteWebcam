@@ -22,5 +22,5 @@ int videoimgwidth = 0;
 int videoimgheight = 0; 
 int captureperiod = 0;
 int timeout = 0;
-BOOL bUDP = FALSE;
 BOOL bWindowResizedFromServer = FALSE;
+BOOL bUDP = FALSE;
