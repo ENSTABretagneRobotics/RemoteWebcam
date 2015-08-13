@@ -178,11 +178,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Globals.c"
+				RelativePath=".\Globals.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Main.c"
+				RelativePath=".\Main.cpp"
 				>
 			</File>
 		</Filter>

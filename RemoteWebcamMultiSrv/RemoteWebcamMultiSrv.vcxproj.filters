@@ -27,12 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Globals.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\OSUtils\OSCore.c">
       <Filter>OSUtils</Filter>
     </ClCompile>
@@ -71,6 +65,12 @@
     </ClCompile>
     <ClCompile Include="..\..\OSUtils\OSTimer.c">
       <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="..\..\OSUtils\OSTimer.h">
       <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvKinect2SDKHook.h">
+      <Filter>Extensions\Img</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -53,8 +53,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;OPENCV249;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;OPENCV249;ENABLE_CVKINECT2SDKHOOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -64,8 +64,8 @@
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>WS2_32.lib;opencv_core249d.lib;opencv_imgproc249d.lib;opencv_highgui249d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SystemDrive)\OpenCV2.4.9\x86\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_core249d.lib;opencv_imgproc249d.lib;opencv_highgui249d.lib;opencv_contrib249d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV2.4.9\x86\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -75,8 +75,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;OPENCV249;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;OPENCV249;ENABLE_CVKINECT2SDKHOOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
@@ -84,8 +84,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>WS2_32.lib;opencv_core249.lib;opencv_imgproc249.lib;opencv_highgui249.lib;IlmImf.lib;zlib.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;Vfw32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SystemDrive)\OpenCV2.4.9\x86\vc11\staticlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_core249.lib;opencv_imgproc249.lib;opencv_highgui249.lib;opencv_contrib249.lib;IlmImf.lib;zlib.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;Vfw32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV2.4.9\x86\vc11\staticlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -98,8 +98,8 @@
     <ClCompile Include="..\..\OSUtils\OSEv.c" />
     <ClCompile Include="..\..\OSUtils\OSThread.c" />
     <ClCompile Include="..\..\OSUtils\OSTimer.c" />
-    <ClCompile Include="Globals.c" />
-    <ClCompile Include="Main.c" />
+    <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="..\..\OSUtils\OSCore.c" />
     <ClCompile Include="..\..\OSUtils\OSMisc.c" />
     <ClCompile Include="..\..\OSUtils\OSNet.c" />
@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\Extensions\Img\CvProc.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Extensions\Img\CvKinect2SDKHook.h" />
     <ClInclude Include="..\..\OSUtils\OSCriticalSection.h" />
     <ClInclude Include="..\..\OSUtils\OSEv.h" />
     <ClInclude Include="..\..\OSUtils\OSThread.h" />

@@ -1,3 +1,6 @@
+15
+Added support of Kinect v2 in RemoteWebcamMultiSrv Visual Studio 2012 project.
+
 14
 Minor modifications.
 Moved bWindowResizedFromServer in RemoteWebcamCli.txt.

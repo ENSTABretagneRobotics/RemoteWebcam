@@ -17,6 +17,13 @@
 #endif // DISABLE_TIMER_RECORDING
 #include "OSNet.h"
 #include "CvCore.h"
+#ifdef ENABLE_CVKINECT2SDKHOOK
+#ifndef INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
+#define INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
+#endif // INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
+#include <Kinect.h>
+#include "CvKinect2SDKHook.h"
+#endif // ENABLE_CVKINECT2SDKHOOK
 
 // Use SOMAXCONN as the max number of simultaneous clients for multithreaded version...
 
