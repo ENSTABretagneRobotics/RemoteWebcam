@@ -4,7 +4,6 @@ Check also proxy settings of Internet Explorer, and any other installed browser.
 It should work with the following software :
 *** USER and DEVEL ***
 _ Windows XP Professional SP3 32 bit/Windows 8 Professional 64 bit
-_ Microsoft Visual C++ 2008 SP1 Redistributable Package/Microsoft Visual C++ 2012 Redistributable Package
 *** DEVEL ***
 _ Visual Studio 2008 SP1/Visual Studio 2012
 _ OpenCV 2.4.9 (download http://www.ensta-bretagne.fr/lebars/Share/OpenCV2.4.9.zip and extract in C:)
