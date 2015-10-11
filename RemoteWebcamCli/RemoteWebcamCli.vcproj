@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.2\include"
+				AdditionalIncludeDirectories="..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;OPENCV242"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,9 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WS2_32.lib opencv_core242d.lib opencv_imgproc242d.lib opencv_highgui242d.lib"
+				AdditionalDependencies="WS2_32.lib opencv_core249d.lib opencv_imgproc249d.lib opencv_highgui249d.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SystemDrive)\OpenCV2.4.2\x86\vc9\lib"
+				AdditionalLibraryDirectories="$(SystemDrive)\OpenCV2.4.9\x86\vc9\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.2\include"
+				AdditionalIncludeDirectories="..\..\OSUtils;..\..\Extensions\Img;$(SystemDrive)\OpenCV2.4.9\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;OPENCV242"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -137,9 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WS2_32.lib opencv_core242.lib opencv_imgproc242.lib opencv_highgui242.lib zlib.lib libjasper.lib libjpeg.lib libpng.lib libtiff.lib Vfw32.lib comctl32.lib"
+				AdditionalDependencies="WS2_32.lib opencv_core249.lib opencv_imgproc249.lib opencv_highgui249.lib IlmImf.lib zlib.lib libjasper.lib libjpeg.lib libpng.lib libtiff.lib Vfw32.lib comctl32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SystemDrive)\OpenCV2.4.2\x86\vc9\staticlib"
+				AdditionalLibraryDirectories="$(SystemDrive)\OpenCV2.4.9\x86\vc9\staticlib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

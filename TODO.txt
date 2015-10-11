@@ -1,6 +1,5 @@
 
 Bug pour webcam T100 si compilé avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
-Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?->cvDecodeImage() very slow depending on computer and configuration?
 
 L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast signed/unsigned and greater size...
@@ -9,12 +8,16 @@ passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
 UDP marche pas pour l'instant, essayer de comprendre...
 
+ajouter gain et gamma en option + colormap et forcer une conversion de l'image en CV_UC3 pour comptabilité depth sensors (en même temps que le resize?)
+
 ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
 HSV?
 
 
 
 OLD
+
+Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?->cvDecodeImage() very slow depending on computer and configuration?->VS2008 utilise maintenant OpenCV2.4.9
 
 rajouter dans serveur l'envoi en résolution plus faible : bForceResize, et aussi le mettre dans UxVCtrl?
 avoir hscale et vscale au lieu de juste scale si on veut passer de 16/9 à 3/4
