@@ -395,9 +395,9 @@ void CleanUp(void)
 
 	bStop = TRUE;
 	StopChronoQuick(&chrono);
-#ifndef DISABLE_GUI_REMOTEWEBCAMSRV
+#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
 	free(databuf);
@@ -626,9 +626,9 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 
 	bStop = TRUE;
 	StopChronoQuick(&chrono);
-#ifndef DISABLE_GUI_REMOTEWEBCAMSRV
+#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
 	mSleep(15000);
