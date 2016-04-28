@@ -1,3 +1,6 @@
+19
+Improved Linux support.
+
 18
 Corrected bug in code reading RemoteWebcamSrv.txt.
 

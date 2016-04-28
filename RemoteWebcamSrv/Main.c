@@ -599,7 +599,7 @@ int main(int argc, char* argv[])
 
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
-	if ((strlen(szDevPath) == 1)&&(isdigit((unsigned char)szDevPath[0])))
+	if ((strlen(szDevPath) == 1)&&(isdigit(szDevPath[0])))
 	{
 		webcam = cvCreateCameraCapture(atoi(szDevPath));
 	}

@@ -714,7 +714,7 @@ int main(int argc, char* argv[])
 
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
-	if ((strlen(szDevPath) == 1)&&(isdigit((unsigned char)szDevPath[0])))
+	if ((strlen(szDevPath) == 1)&&(isdigit(szDevPath[0])))
 	{
 		webcam = cvCreateCameraCapture(atoi(szDevPath));
 	}
@@ -810,9 +810,17 @@ int main(int argc, char* argv[])
 			//CV_FOURCC('D','I','V','X'), 
 			//CV_FOURCC('I', 'Y', 'U', 'V'), 
 #else
+#ifdef USE_ALTERNATE_RECORDING
+		sprintf(videorecordfilename, "video_%.64s.avi", strtime_fns());
+		videorecordfile = cvCreateVideoWriter(videorecordfilename, 
+			CV_FOURCC('M','J','P','G'), 
+			//CV_FOURCC('D','I','V','X'), 
+			//CV_FOURCC('I', 'Y', 'U', 'V'), 
+#else
 		sprintf(videorecordfilename, "video_%.64s.wmv", strtime_fns());
 		videorecordfile = cvCreateVideoWriter(videorecordfilename, 
 			CV_FOURCC('W','M','V','2'), 
+#endif // USE_ALTERNATE_RECORDING
 #endif // __ANDROID__
 #ifdef DISABLE_TIMER_RECORDING
 			1000.0/(double)(captureperiod+20), // 20 ms is an approximation of the extra time spent for computations...

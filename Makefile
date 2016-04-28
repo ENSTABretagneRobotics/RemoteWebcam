@@ -7,11 +7,14 @@
 PROGS = RemoteWebcamMultiSrv RemoteWebcamSrv RemoteWebcamCli
 
 CC = gcc
-CFLAGS += -Wall -Winline -Wextra -g -fpermissive
-#CFLAGS += -Wall -O3 -fpermissive
+CXX = g++
+#CFLAGS += -Wall -Winline -Wextra -g
+CFLAGS += -Wall -O3
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img
-CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY -D _DEBUG_MESSAGES 
+#CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY -D _DEBUG_MESSAGES 
+CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMSRV -D DISABLE_GUI_REMOTEWEBCAMMULTISRV -D USE_ALTERNATE_RECORDING
 CFLAGS += -D OPENCV249
+CXXFLAGS += $(CFLAGS) -fpermissive
 LDFLAGS += -lopencv_core -lopencv_highgui -lopencv_imgproc
 LDFLAGS += -lpthread -lrt -lm 
 
@@ -62,14 +65,14 @@ CvDisp.o: ../Extensions/Img/CvDisp.c ../Extensions/Img/CvDisp.h CvCore.o
 
 ############################# PROGS #############################
 
-RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) -c $< -o $@
+RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.cpp CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.c RemoteWebcamMultiSrv/Globals.o
-	$(CC) $(CFLAGS) -c $< -o $@
+RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.cpp RemoteWebcamMultiSrv/Globals.o
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) -o RemoteWebcamMultiSrv/$@ $^ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o RemoteWebcamMultiSrv/$@ $^ $(LDFLAGS)
 
 RemoteWebcamSrv/Globals.o: RemoteWebcamSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -90,4 +93,4 @@ RemoteWebcamCli: RemoteWebcamCli/Main.o RemoteWebcamCli/Globals.o CvDisp.o CvDra
 	$(CC) $(CFLAGS) -o RemoteWebcamCli/$@ $^ $(LDFLAGS)
 
 clean:
-	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
+	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/*.o RemoteWebcamSrv/*.o RemoteWebcamCli/*.o RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
