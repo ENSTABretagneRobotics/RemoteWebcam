@@ -1,3 +1,7 @@
+18
+Corrected bug in code reading RemoteWebcamSrv.txt.
+
+17
 Changed hard-coded default options.
 Minor corrections.
 
