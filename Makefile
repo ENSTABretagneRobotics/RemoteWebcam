@@ -3,19 +3,28 @@
 #    sudo apt-get install build-essential
 # in a terminal.
 # You need to install OpenCV 2.4.9.
+# For more information on the configuration used, see www.ensta-bretagne.fr/lebars/Share/Ubuntu.txt .
+# Use dos2unix *.txt to ensure line endings are correct for Linux in the configuration files.
+# In case of codecs problems, try with USE_ALTERNATE_RECORDING...
 
 PROGS = RemoteWebcamMultiSrv RemoteWebcamSrv RemoteWebcamCli
 
 CC = gcc
 CXX = g++
+
 #CFLAGS += -Wall -Winline -Wextra -g
 CFLAGS += -Wall -O3
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img
-#CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY -D _DEBUG_MESSAGES 
-CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMSRV -D DISABLE_GUI_REMOTEWEBCAMMULTISRV -D USE_ALTERNATE_RECORDING
+#CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY
+#CFLAGS += -D _DEBUG_MESSAGES 
+#CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMSRV -D DISABLE_GUI_REMOTEWEBCAMMULTISRV -D USE_ALTERNATE_RECORDING
 CFLAGS += -D OPENCV249
+#CFLAGS += -D OPENCV310
+
 CXXFLAGS += $(CFLAGS) -fpermissive
+
 LDFLAGS += -lopencv_core -lopencv_highgui -lopencv_imgproc
+#LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
 LDFLAGS += -lpthread -lrt -lm 
 
 default: $(PROGS)
