@@ -1,3 +1,7 @@
+21
+Improved different line endings support.
+Improved compatibility with Visual Studio 2015 and gcc 5.2.1.
+
 20
 Improved compatibility with OpenCV 3.1.0.
 Added hcenter, vcenter, hshift, vshift parameters in servers configuration files.

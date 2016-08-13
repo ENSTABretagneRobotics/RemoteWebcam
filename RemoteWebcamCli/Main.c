@@ -224,7 +224,7 @@ int recvdecode(void)
 		// Partial image data (dynamic time compression) or full image data without compression.
 
 		// Quick checks...
-		if (((int)header[1] < 0)||((int)header[1] > 4096)||((int)header[2] < 0)||((int)header[2] > 4096)||(val > 3*4096*4096+3*sizeof(unsigned int)))
+		if (((int)header[1] < 0)||(header[1] > 4096)||((int)header[2] < 0)||(header[2] > 4096)||(val > 3*4096*4096+3*sizeof(unsigned int)))
 		{
 			printf("Unable to set desired video resolution or transmission error.\n");
 			return EXIT_FAILURE;
@@ -283,7 +283,7 @@ int recvdecode(void)
 					// Blue index value of the pixel.
 					memcpy((char*)&val, databuf+i, sizeof(unsigned int)); 
 					// Check if index is valid.
-					if ((val < 0)||(val > image->imageSize-3*sizeof(char))) 
+					if (((int)val < 0)||(val > image->imageSize-3*sizeof(char))) 
 					{
 						printf("Bad compression or transmission error.\n");
 						return EXIT_FAILURE;
