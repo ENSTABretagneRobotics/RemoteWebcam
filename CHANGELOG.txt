@@ -1,3 +1,6 @@
+22
+Added Python sample client mjpeg.py and updated ReadMe.txt.
+
 21
 Improved different line endings support.
 Improved compatibility with Visual Studio 2015 and gcc 5.2.1.

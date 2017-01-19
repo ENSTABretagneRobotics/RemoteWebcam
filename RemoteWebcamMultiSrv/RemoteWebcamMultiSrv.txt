@@ -49,7 +49,7 @@
 %9
 % encodetype (.JPEG or .PNG)
 .JPEG
-% method (0, 1 : static and dynamic compression based on movement detection, 2 : no compression, 3 : MJPEG (compatible with e.g. VLC, Firefox, Chrome (modify mjpeg.html to test)))
+% method (0, 1 : static and dynamic compression based on movement detection, 2 : no compression, 3 : MJPEG (compatible with e.g. VLC, Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV))
 3
 % bDisableVideoRecording
 0
