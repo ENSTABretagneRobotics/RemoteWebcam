@@ -1,6 +1,6 @@
 % cli1address
 127.0.0.1
-%192.168.1.107
+%192.168.0.13
 % cli1port
 4014
 % videoimgwidth
