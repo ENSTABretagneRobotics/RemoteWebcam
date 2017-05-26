@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="OSUtils">
+      <UniqueIdentifier>{efe047b1-16a3-476b-ae63-8ea3b7eaab3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Extensions">
+      <UniqueIdentifier>{09ea2e58-89cd-4672-9602-5815569a092f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Extensions\Img">
+      <UniqueIdentifier>{ecc2b6a9-b6f4-4808-8063-19898ba02c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Files">
+      <UniqueIdentifier>{d25e9c94-697f-4210-a8fe-efae32813e36}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Globals.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSCore.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSMisc.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSNet.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSUtils\OSTime.c">
+      <Filter>OSUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extensions\Img\CvCore.c">
+      <Filter>Extensions\Img</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extensions\Img\CvDisp.c">
+      <Filter>Extensions\Img</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extensions\Img\CvDraw.c">
+      <Filter>Extensions\Img</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extensions\Img\CvFiles.c">
+      <Filter>Extensions\Img</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extensions\Img\CvProc.c">
+      <Filter>Extensions\Img</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSCore.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSMisc.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSNet.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSUtils\OSTime.h">
+      <Filter>OSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvCore.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvDisp.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvDraw.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvFiles.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvProc.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvUtils.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="RemoteWebcamSrv.txt">
+      <Filter>Input Files</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

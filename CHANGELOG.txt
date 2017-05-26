@@ -1,3 +1,6 @@
+23
+Default project files are now with Visual Studio 2017 and OpenCV 2.4.13.
+
 22
 Added Python sample client mjpeg.py and updated ReadMe.txt.
 
