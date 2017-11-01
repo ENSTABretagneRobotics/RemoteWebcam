@@ -8,11 +8,11 @@ Check also proxy settings of Internet Explorer, and any other installed browser.
 
 It should work with the following software :
 *** USER and DEVEL ***
-_ Windows XP Professional SP3 32 bit/Windows 8.1 Professional 64 bit
-_ Kinect v2 SDK (not available for Visual Studio 2008 and Windows XP)
+_ Windows 10 Professional 64 bit
+_ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 *** DEVEL ***
-_ Visual Studio 2008/2012/2017
-_ OpenCV 2.4.9/2.4.13 (download http://www.ensta-bretagne.fr/lebars/Share/OpenCV2.4.13.zip and extract in C:)
+_ Visual Studio 2017
+_ OpenCV 2.4.13 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv2413.pdf )
 
 It is also supposed to be compatible with Linux with equivalent prerequisites, although not fully tested, see Makefile.
 
