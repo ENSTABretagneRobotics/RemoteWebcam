@@ -30,4 +30,4 @@ EXTERN_C int timeout;
 EXTERN_C BOOL bWindowResizedFromServer;
 EXTERN_C BOOL bUDP;
 
-#endif // GLOBALS_H
+#endif // !GLOBALS_H

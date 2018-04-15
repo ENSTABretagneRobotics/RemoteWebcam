@@ -14,13 +14,13 @@
 #include "OSCriticalSection.h"
 #ifndef DISABLE_TIMER_RECORDING
 #include "OSTimer.h"
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 #include "OSNet.h"
 #include "CvCore.h"
 #ifdef ENABLE_CVKINECT2SDKHOOK
 #ifndef INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
 #define INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
-#endif // INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
+#endif // !INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
 #include <Kinect.h>
 #include "CvKinect2SDKHook.h"
 #endif // ENABLE_CVKINECT2SDKHOOK
@@ -31,7 +31,7 @@ EXTERN_C CvCapture* webcam;
 EXTERN_C CvVideoWriter* videorecordfile;
 #ifndef DISABLE_TIMER_RECORDING
 EXTERN_C TIMER timer;
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 EXTERN_C CHRONO chrono;
 EXTERN_C CvFont font;
 EXTERN_C CRITICAL_SECTION imageCS;
@@ -73,4 +73,4 @@ EXTERN_C char encodetype[32];
 EXTERN_C int method; 
 EXTERN_C BOOL bDisableVideoRecording;
 
-#endif // GLOBALS_H
+#endif // !GLOBALS_H

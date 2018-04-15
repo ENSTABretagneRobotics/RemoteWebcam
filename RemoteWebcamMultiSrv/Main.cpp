@@ -401,7 +401,7 @@ void CleanUp(void)
 	// Ensure the video recording is correctly stopped.
 #ifndef DISABLE_TIMER_RECORDING
 	DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 	videorecordfile = NULL;
 
@@ -409,7 +409,7 @@ void CleanUp(void)
 	StopChronoQuick(&chrono);
 #ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
 	free(databuf);
@@ -430,7 +430,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 	char httpbuf[2048];
 #ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	int c = 0;
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 
 	UNREFERENCED_PARAMETER(pParam);
 
@@ -463,7 +463,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 	cvWaitKey(10);
 #else
 	mSleep(10);
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 
 	StartChrono(&chrono);
 
@@ -622,14 +622,14 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 		if ((char)c == 27) break;
 #else
 		mSleep(captureperiod);
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		if (bStop) break;
 	}
 
 	// Ensure the video recording is correctly stopped.
 #ifndef DISABLE_TIMER_RECORDING
 	DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 	videorecordfile = NULL;
 
@@ -637,7 +637,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 	StopChronoQuick(&chrono);
 #ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMMULTISRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 	cvReleaseImage(&detectimage);
 	cvReleaseImage(&previmage);
 	mSleep(15000);
@@ -662,7 +662,7 @@ TIMERCALLBACK_RETURN_VALUE VideoRecordCallbackFunction(void* pParam, BOOLEAN b)
 	}
 	LeaveCriticalSection(&imageCS);
 }
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 
 int quitall()
 {
@@ -702,7 +702,7 @@ int main(int argc, char* argv[])
 
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
-#endif // __ANDROID__
+#endif // !__ANDROID__
 
 	LoadConfig();
 
@@ -848,7 +848,7 @@ int main(int argc, char* argv[])
 	{
 		printf("Error creating a timer.\n");
 	}
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 
 	databuflen = image->imageSize+3*sizeof(unsigned int);
 	sharedbuflen = 0;
@@ -858,7 +858,7 @@ int main(int argc, char* argv[])
 		printf("calloc() failed.\n");
 #ifndef DISABLE_TIMER_RECORDING
 		DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
@@ -877,7 +877,7 @@ int main(int argc, char* argv[])
 		free(sharedbuf);
 #ifndef DISABLE_TIMER_RECORDING
 		DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
@@ -897,7 +897,7 @@ int main(int argc, char* argv[])
 		free(sharedbuf);
 #ifndef DISABLE_TIMER_RECORDING
 		DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
@@ -925,7 +925,7 @@ int main(int argc, char* argv[])
 		free(sharedbuf);
 #ifndef DISABLE_TIMER_RECORDING
 		DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 		DeleteCriticalSection(&imageCS);
 		if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
@@ -941,7 +941,7 @@ int main(int argc, char* argv[])
 	free(sharedbuf);
 #ifndef DISABLE_TIMER_RECORDING
 	DeleteTimer(&timer, FALSE);
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 	DeleteCriticalSection(&imageCS);
 	if (videorecordfile) cvReleaseVideoWriter(&videorecordfile);
 	if (bForceSoftwareResize) cvReleaseImage(&resizedframe);

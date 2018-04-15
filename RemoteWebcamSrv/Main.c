@@ -294,7 +294,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 	char httpbuf[2048];
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 	int c = 0;
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 
 	UNREFERENCED_PARAMETER(pParam);
 
@@ -537,7 +537,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 			}
 #else
 			mSleep(captureperiod);
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 			break;
 		}
 
@@ -587,7 +587,7 @@ int main(int argc, char* argv[])
 
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
-#endif // __ANDROID__
+#endif // !__ANDROID__
 
 	LoadConfig();
 
@@ -699,7 +699,7 @@ int main(int argc, char* argv[])
 	cvWaitKey(10);
 #else
 	mSleep(10);
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 
 	databuf = (char*)calloc(image->imageSize+3*sizeof(unsigned int), sizeof(char));
 	if (!databuf)	
@@ -707,7 +707,7 @@ int main(int argc, char* argv[])
 		printf("calloc() failed.\n");
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 		cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 		cvReleaseImage(&image);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseCapture(&webcam);
@@ -727,7 +727,7 @@ int main(int argc, char* argv[])
 		free(databuf);
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 		cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 		cvReleaseImage(&image);
 		if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 		cvReleaseCapture(&webcam);
@@ -737,7 +737,7 @@ int main(int argc, char* argv[])
 	free(databuf);
 #ifndef DISABLE_GUI_REMOTEWEBCAMSRV
 	cvDestroyWindow("Detection");
-#endif // DISABLE_GUI_REMOTEWEBCAMSRV
+#endif // !DISABLE_GUI_REMOTEWEBCAMSRV
 	cvReleaseImage(&image);
 	if (bForceSoftwareResize) cvReleaseImage(&resizedframe);
 	cvReleaseCapture(&webcam);

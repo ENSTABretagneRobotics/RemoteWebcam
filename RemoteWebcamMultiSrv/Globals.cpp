@@ -13,7 +13,7 @@ CvCapture* webcam = NULL;
 CvVideoWriter* videorecordfile = NULL;
 #ifndef DISABLE_TIMER_RECORDING
 TIMER timer;
-#endif // DISABLE_TIMER_RECORDING
+#endif // !DISABLE_TIMER_RECORDING
 CHRONO chrono;
 CvFont font;
 CRITICAL_SECTION imageCS;

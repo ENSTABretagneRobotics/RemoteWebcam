@@ -52,4 +52,4 @@ EXTERN_C int encodequality;
 EXTERN_C char encodetype[32];
 EXTERN_C int method; 
 
-#endif // GLOBALS_H
+#endif // !GLOBALS_H
