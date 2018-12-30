@@ -53,3 +53,5 @@
 3
 % bDisableVideoRecording
 0
+% szVideoRecordCodec (WMV2, MJPG, HFYU, DIVX, XVID, etc., see OpenCV FOURCC codecs)
+WMV2

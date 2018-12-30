@@ -1,7 +1,7 @@
 This folder contains programs used to get a realtime remote access to a webcam. It is a TCP server opening a webcam and sending images to a TCP client optionally using :
 _ JPEG compression provided by the OpenCV function cvEncodeImage() and with a time compression based on movement detection.
 _ No compression.
-_ MJPEG (compatible with e.g. VLC, Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV). This is the default.
+_ MJPEG (compatible with e.g. VLC, Google Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV). This is the default.
 
 It is recommended to be connected with an administrator account, deactivate any antivirus, firewall or other settings that would block network ports. On Windows 7/8/10, choose Work/Private for the network type if asked when connecting to the different networks (avoid Public type, to check and change go to Network and Sharing Center and click on Public to be able to change to Work/Private, or go to PC Settings\Network, select the desired network and enable the option Find devices and content/Make this PC discoverable).
 Check also proxy settings of Internet Explorer, and any other installed browser.
@@ -23,5 +23,7 @@ _ ..\OSUtils : Windows/Linux abstraction layer (threads, network, serial port, t
 _ ..\Extensions : some image functions.
 
 Please do not try to build the program in a directory that contains commas! Mind the line endings in the configuration files depending on the OS (use e.g. the command dos2unix *.txt to convert line endings for Linux)!
+
+If recording does not work, try to specify another codec in RemoteWebcamMultiSrv.txt.
 
 See also https://github.com/ENSTABretagneRobotics/Android and http://www.ensta-bretagne.fr/lebars/utilities/.

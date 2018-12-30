@@ -1,3 +1,4 @@
+move MovementDetection() and MovementDetection2() to CvProc.h?
 
 retourner des codes d'erreur différents...
 pour Android, il faudrait que AppNativeMain() lance dans un thread la boucle principale pour que ça puisse être arrêté correctement...->en fait c'est pas indispensable...
@@ -24,6 +25,8 @@ HSV?
 
 
 OLD
+
+rajouter support libavcodec pour pouvoir gérer l'enregistrement à une résolution différente avec UxVCtrl?
 
 Release : clarifier dans le dossier qu'il faut utiliser les binaires WindowsXP quand on n'a pas la Kinect, peut-être renommer en Windows et faire sous-dossier Kinect2
 

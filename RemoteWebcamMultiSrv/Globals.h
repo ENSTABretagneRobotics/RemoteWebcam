@@ -27,25 +27,46 @@
 
 // Use SOMAXCONN as the max number of simultaneous clients for multithreaded version...
 
+#ifdef __ANDROID__
+#define VID_FOLDER "/storage/sdcard0/download/"
+#else
+#define VID_FOLDER ""
+#endif // __ANDROID__
+
+#ifndef USE_OPENCV_HIGHGUI_CPP_API
 EXTERN_C CvCapture* webcam;
 EXTERN_C CvVideoWriter* videorecordfile;
+#else
+extern cv::VideoCapture* webcam;
+extern cv::Mat* pframemat;
+extern IplImage frameipl;
+extern cv::VideoWriter videorecordfile;
+#endif // !USE_OPENCV_HIGHGUI_CPP_API
 #ifndef DISABLE_TIMER_RECORDING
 EXTERN_C TIMER timer;
 #endif // !DISABLE_TIMER_RECORDING
 EXTERN_C CHRONO chrono;
+#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 EXTERN_C CvFont font;
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 EXTERN_C CRITICAL_SECTION imageCS;
 EXTERN_C IplImage* frame;
 EXTERN_C IplImage* resizedframe;
 EXTERN_C IplImage* image;
 EXTERN_C IplImage* previmage;
+#ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
 EXTERN_C IplImage* detectimage;
+#endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 EXTERN_C char* databuf;
 EXTERN_C int databuflen;
 EXTERN_C char* sharedbuf;
 EXTERN_C int sharedbuflen;
 EXTERN_C CRITICAL_SECTION sharedbufCS;
+#ifndef USE_OPENCV_HIGHGUI_CPP_API
 EXTERN_C int encodeparams[2];
+#else
+extern std::vector<int> encodeparams;
+#endif // !USE_OPENCV_HIGHGUI_CPP_API
 EXTERN_C BOOL bStop;
 
 // Parameters.
@@ -72,5 +93,6 @@ EXTERN_C int encodequality;
 EXTERN_C char encodetype[32];
 EXTERN_C int method; 
 EXTERN_C BOOL bDisableVideoRecording;
+EXTERN_C char szVideoRecordCodec[5];
 
 #endif // !GLOBALS_H
