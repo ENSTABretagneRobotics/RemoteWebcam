@@ -5,7 +5,7 @@
 # You need to install OpenCV 2.4.
 # Use dos2unix *.txt to ensure line endings are correct for Linux in the configuration files.
 
-PROGS = RemoteWebcamMultiSrv RemoteWebcamSrv RemoteWebcamCli
+PROGS = RemoteWebcamMultiSrv RemoteWebcamCli
 
 CC = gcc
 CXX = g++
@@ -55,51 +55,25 @@ OSTime.o: ../OSUtils/OSTime.c ../OSUtils/OSTime.h OSCore.o
 OSTimer.o: ../OSUtils/OSTimer.c ../OSUtils/OSTimer.h OSEv.o
 	$(CC) $(CFLAGS) -c $<
 
-############################# Extensions #############################
-
-CvCore.o: ../Extensions/Img/CvCore.c ../Extensions/Img/CvCore.h OSTime.o
-	$(CC) $(CFLAGS) -c $<
-
-CvFiles.o: ../Extensions/Img/CvFiles.c ../Extensions/Img/CvFiles.h CvCore.o
-	$(CC) $(CFLAGS) -c $<
-
-CvProc.o: ../Extensions/Img/CvProc.c ../Extensions/Img/CvProc.h CvCore.o
-	$(CC) $(CFLAGS) -c $<
-
-CvDraw.o: ../Extensions/Img/CvDraw.c ../Extensions/Img/CvDraw.h CvCore.o
-	$(CC) $(CFLAGS) -c $<
-
-CvDisp.o: ../Extensions/Img/CvDisp.c ../Extensions/Img/CvDisp.h CvCore.o
-	$(CC) $(CFLAGS) -c $<
-
 ############################# PROGS #############################
 
-RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.cpp CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamMultiSrv/Globals.o: RemoteWebcamMultiSrv/Globals.cpp OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 RemoteWebcamMultiSrv/Main.o: RemoteWebcamMultiSrv/Main.cpp RemoteWebcamMultiSrv/Globals.o
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamMultiSrv: RemoteWebcamMultiSrv/Main.o RemoteWebcamMultiSrv/Globals.o OSNet.o OSTimer.o OSEv.o OSCriticalSection.o OSThread.o OSMisc.o OSTime.o OSCore.o
 	$(CXX) $(CXXFLAGS) -o RemoteWebcamMultiSrv/$@ $^ $(LDFLAGS)
 
-RemoteWebcamSrv/Globals.o: RemoteWebcamSrv/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) -c $< -o $@
-
-RemoteWebcamSrv/Main.o: RemoteWebcamSrv/Main.c RemoteWebcamSrv/Globals.o
-	$(CC) $(CFLAGS) -c $< -o $@
-
-RemoteWebcamSrv: RemoteWebcamSrv/Main.o RemoteWebcamSrv/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
-	$(CC) $(CFLAGS) -o RemoteWebcamSrv/$@ $^ $(LDFLAGS)
-
-RemoteWebcamCli/Globals.o: RemoteWebcamCli/Globals.c CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamCli/Globals.o: RemoteWebcamCli/Globals.c OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
 RemoteWebcamCli/Main.o: RemoteWebcamCli/Main.c RemoteWebcamCli/Globals.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
-RemoteWebcamCli: RemoteWebcamCli/Main.o RemoteWebcamCli/Globals.o CvDisp.o CvDraw.o CvProc.o CvFiles.o CvCore.o OSNet.o OSMisc.o OSTime.o OSCore.o
+RemoteWebcamCli: RemoteWebcamCli/Main.o RemoteWebcamCli/Globals.o OSNet.o OSMisc.o OSTime.o OSCore.o
 	$(CC) $(CFLAGS) -o RemoteWebcamCli/$@ $^ $(LDFLAGS)
 
 clean:
-	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/*.o RemoteWebcamSrv/*.o RemoteWebcamCli/*.o RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamSrv/RemoteWebcamSrv RemoteWebcamCli/RemoteWebcamCli
+	rm -f *.o *.obj core *.gch RemoteWebcamMultiSrv/*.o RemoteWebcamCli/*.o RemoteWebcamMultiSrv/RemoteWebcamMultiSrv RemoteWebcamCli/RemoteWebcamCli

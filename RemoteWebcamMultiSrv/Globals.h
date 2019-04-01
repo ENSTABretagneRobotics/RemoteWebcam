@@ -16,7 +16,7 @@
 #include "OSTimer.h"
 #endif // !DISABLE_TIMER_RECORDING
 #include "OSNet.h"
-#include "CvCore.h"
+#include "CvInc.h"
 #ifdef ENABLE_CVKINECT2SDKHOOK
 #ifndef INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK
 #define INCLUDE_HEADERS_OUTSIDE_CVKINECT2SDKHOOK

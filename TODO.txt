@@ -1,3 +1,5 @@
+update cli for cpp, changes from UxVCtrl, update Android...?
+
 move MovementDetection() and MovementDetection2() to CvProc.h?
 
 retourner des codes d'erreur différents...

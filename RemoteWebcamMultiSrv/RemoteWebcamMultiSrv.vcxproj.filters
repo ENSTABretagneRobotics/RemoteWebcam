@@ -39,21 +39,6 @@
     <ClCompile Include="..\..\OSUtils\OSTime.c">
       <Filter>OSUtils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Extensions\Img\CvCore.c">
-      <Filter>Extensions\Img</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Extensions\Img\CvDisp.c">
-      <Filter>Extensions\Img</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Extensions\Img\CvDraw.c">
-      <Filter>Extensions\Img</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Extensions\Img\CvFiles.c">
-      <Filter>Extensions\Img</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Extensions\Img\CvProc.c">
-      <Filter>Extensions\Img</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\OSUtils\OSThread.c">
       <Filter>OSUtils</Filter>
     </ClCompile>
@@ -120,6 +105,9 @@
       <Filter>OSUtils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Extensions\Img\CvKinect2SDKHook.h">
+      <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Img\CvInc.h">
       <Filter>Extensions\Img</Filter>
     </ClInclude>
   </ItemGroup>

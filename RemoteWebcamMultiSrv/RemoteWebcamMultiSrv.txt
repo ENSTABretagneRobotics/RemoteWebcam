@@ -35,7 +35,7 @@
 0
 % bUDP
 0
-% pixcolorchgthreshold (in [0,255], the lower is the better quality, but use more bandwidth)
+% pixcolorchgthreshold (in [0,255], the lower is the better quality, but uses more bandwidth)
 12
 %6
 % timecompressiondividerthreshold
@@ -43,7 +43,7 @@
 %15
 % fullimgperiod (in ms)
 1000
-% encodequality (JPEG : in [0,100], the higher is the better quality, but use more CPU and bandwidth, PNG : in [0,9], a higher value means a smaller size and longer compression time)
+% encodequality (JPEG : in [0,100], the higher is the better quality, but uses more CPU and bandwidth, PNG : in [0,9], a higher value means a smaller size and longer compression time)
 50
 %50
 %9
