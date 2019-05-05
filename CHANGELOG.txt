@@ -1,3 +1,6 @@
+27
+Improved compatibility of RemoteWebcamMultiSrv with OpenCV 4.1.0.
+
 26
 Removed RemoteWebcamSrv.
 Improved Linux support.

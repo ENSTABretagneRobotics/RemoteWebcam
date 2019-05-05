@@ -948,7 +948,7 @@ int main(int argc, char* argv[])
 		encodeparams[0] = CV_IMWRITE_JPEG_QUALITY;
 		encodeparams[1] = encodequality;
 #else
-		encodeparams.push_back(CV_IMWRITE_JPEG_QUALITY);
+		encodeparams.push_back(cv::IMWRITE_JPEG_QUALITY);
 		encodeparams.push_back(encodequality);
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 	}
@@ -958,7 +958,7 @@ int main(int argc, char* argv[])
 		encodeparams[0] = CV_IMWRITE_PNG_COMPRESSION;
 		encodeparams[1] = encodequality;
 #else
-		encodeparams.push_back(CV_IMWRITE_PNG_COMPRESSION);
+		encodeparams.push_back(cv::IMWRITE_PNG_COMPRESSION);
 		encodeparams.push_back(encodequality);
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 	}
@@ -968,7 +968,7 @@ int main(int argc, char* argv[])
 		encodeparams[0] = CV_IMWRITE_PXM_BINARY;
 		encodeparams[1] = encodequality;
 #else
-		encodeparams.push_back(CV_IMWRITE_PXM_BINARY);
+		encodeparams.push_back(cv::IMWRITE_PXM_BINARY);
 		encodeparams.push_back(encodequality);
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 	}
@@ -1051,8 +1051,13 @@ int main(int argc, char* argv[])
 		}
 	}
 
+#if (CV_MAJOR_VERSION < 3)
 	webcam->set(CV_CAP_PROP_FRAME_WIDTH, videoimgwidth);
 	webcam->set(CV_CAP_PROP_FRAME_HEIGHT, videoimgheight);
+#else
+	webcam->set(cv::CAP_PROP_FRAME_WIDTH, videoimgwidth);
+	webcam->set(cv::CAP_PROP_FRAME_HEIGHT, videoimgheight);
+#endif // (CV_MAJOR_VERSION < 3)
 
 	// Sometimes the first images are bad, so wait a little bit and take
 	// several images in the beginning.
@@ -1163,8 +1168,11 @@ int main(int argc, char* argv[])
 		if (!videorecordfile)
 #else
 		if (!videorecordfile.open(videorecordfilename,
-			//CV_FOURCC_PROMPT,
+#if (CV_MAJOR_VERSION < 3)
 			CV_FOURCC(szVideoRecordCodec[0], szVideoRecordCodec[1], szVideoRecordCodec[2], szVideoRecordCodec[3]),
+#else
+			cv::VideoWriter::fourcc(szVideoRecordCodec[0], szVideoRecordCodec[1], szVideoRecordCodec[2], szVideoRecordCodec[3]),
+#endif // (CV_MAJOR_VERSION < 3)
 			fps,
 			cvSize(image->width, image->height),
 			1))
