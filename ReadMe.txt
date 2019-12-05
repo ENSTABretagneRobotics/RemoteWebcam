@@ -14,7 +14,7 @@ _ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 _ Visual Studio 2017
 _ OpenCV 3.2.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv320.pdf )
 
-It is also supposed to be compatible with Linux with equivalent prerequisites, although not fully tested, see Makefile.
+It is also supposed to be compatible with Linux with equivalent prerequisites, see Makefile.
 
 Restart the computer after installation.
 
@@ -26,4 +26,4 @@ Please do not try to build the program in a directory that contains commas! Mind
 
 If recording does not work, try to specify another codec in RemoteWebcamMultiSrv.txt.
 
-See also https://github.com/ENSTABretagneRobotics/Android and http://www.ensta-bretagne.fr/lebars/utilities/.
+See also https://github.com/ENSTABretagneRobotics/Android and http://www.ensta-bretagne.fr/lebars/utilities/ .

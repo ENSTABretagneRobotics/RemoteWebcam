@@ -1,8 +1,7 @@
-# Makefile for Linux, designed for Ubuntu 18.04 and Android 4.1.2. 
-# You might need to install C/C++ development tools by typing :
-#    sudo apt-get install build-essential
+# Makefile for Linux, designed for Ubuntu 18.04 (and Android 4.1.2). 
+# You might need to install C/C++ development tools and OpenCV 3.2.0 by typing :
+#    sudo apt-get install build-essential libopencv-dev
 # in a terminal.
-# You need to install OpenCV 3.2.0.
 # Use dos2unix *.txt to ensure line endings are correct for Linux in the configuration files.
 
 PROGS = RemoteWebcamMultiSrv RemoteWebcamCli
