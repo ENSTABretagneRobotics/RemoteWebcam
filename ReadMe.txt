@@ -12,7 +12,7 @@ _ Windows 10 Professional 64 bit
 _ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 *** DEVEL ***
 _ Visual Studio 2017
-_ OpenCV 2.4.13 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv2413.pdf )
+_ OpenCV 3.2.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv320.pdf )
 
 It is also supposed to be compatible with Linux with equivalent prerequisites, although not fully tested, see Makefile.
 

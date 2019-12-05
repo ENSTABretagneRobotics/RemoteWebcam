@@ -386,7 +386,7 @@ int main(int argc, char* argv[])
 
 		sprintf(databuf, "HELLO");
 		sendtoall(s1, databuf, strlen("HELLO")+1, (struct sockaddr*)&sa, sizeof(sa));
-		recvfromall(s1, databuf, strlen("OK")+1, (struct sockaddr*)&sa, &salen);
+		recvfromall(s1, databuf, strlen("OK")+1, (struct sockaddr*)&sa, (int*)&salen);
 		sprintf(databuf, "HELLO");
 		sendall(s1, databuf, strlen("HELLO")+1);
 		recvall(s1, databuf, strlen("OK")+1);

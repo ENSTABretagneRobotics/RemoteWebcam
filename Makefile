@@ -1,8 +1,8 @@
-# Makefile for Linux, designed for Ubuntu 16.04 and Android 4.1.2. 
+# Makefile for Linux, designed for Ubuntu 18.04 and Android 4.1.2. 
 # You might need to install C/C++ development tools by typing :
 #    sudo apt-get install build-essential
 # in a terminal.
-# You need to install OpenCV 2.4.
+# You need to install OpenCV 3.2.0.
 # Use dos2unix *.txt to ensure line endings are correct for Linux in the configuration files.
 
 PROGS = RemoteWebcamMultiSrv RemoteWebcamCli
@@ -10,21 +10,33 @@ PROGS = RemoteWebcamMultiSrv RemoteWebcamCli
 CC = gcc
 CXX = g++
 
-#CFLAGS += -Wall -Winline -Wextra -g
-CFLAGS += -Wall -O3
+#CFLAGS += -g
+CFLAGS += -O3
+CFLAGS += -Wall -Wextra
+#CFLAGS += -Winline
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img
 #CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY
 #CFLAGS += -D _DEBUG_MESSAGES 
 #CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMSRV -D DISABLE_GUI_REMOTEWEBCAMMULTISRV
 #CFLAGS += -D USE_OPENCV_HIGHGUI_CPP_API
-CFLAGS += -D OPENCV2413
-#CFLAGS += -D OPENCV320
+#CFLAGS += -D OPENCV2413
+CFLAGS += -D OPENCV320
+#CFLAGS += -D OPENCV412
 #CFLAGS += -D ENABLE_GETTIMEOFDAY_WIN32 -D DISABLE_TIMEZONE_STRUCT_REDEFINITION
 
 CXXFLAGS += $(CFLAGS) -fpermissive
 
-LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui
-#LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
+# Might be necessary for recent GCC versions...
+#CXXFLAGS += -Wno-psabi
+
+# Might be necessary for recent OpenCV versions...
+#CXXFLAGS += -std=c++11
+
+# Might be necessary to tweak depending on OpenCV version...
+#LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
+
+# Might need to remove -lrt for Mac OS...
 LDFLAGS += -lpthread -lrt -lm 
 
 default: $(PROGS)
