@@ -19,10 +19,10 @@ It is also supposed to be compatible with Linux with equivalent prerequisites, s
 Restart the computer after installation.
 
 The following are required sources dependencies :  
-_ ..\OSUtils : Windows/Linux abstraction layer (threads, network, serial port, time management...) as well as other useful functions.
-_ ..\Extensions : some image functions.
+_ ..\OSUtils : Windows/Linux abstraction layer (threads, network, serial port, time management...) as well as other useful functions (see https://github.com/ENSTABretagneRobotics/OSUtils )
+_ ..\Extensions : some image functions (see https://github.com/ENSTABretagneRobotics/Extensions )
 
-Please do not try to build the program in a directory that contains commas! Mind the line endings in the configuration files depending on the OS (use e.g. the command dos2unix *.txt to convert line endings for Linux)!
+Please do not try to build the program in a directory that contains commas or other unusual characters! Mind the line endings in the configuration files depending on the OS (use e.g. the command dos2unix *.txt to convert line endings for Linux)!
 
 If recording does not work, try to specify another codec in RemoteWebcamMultiSrv.txt.
 

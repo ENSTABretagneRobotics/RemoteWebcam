@@ -1,4 +1,4 @@
-# Makefile for Linux, designed for Ubuntu 18.04 (and Android 4.1.2). 
+# Designed for Ubuntu 18.04 (and Android 4.1.2). 
 # You might need to install C/C++ development tools and OpenCV 3.2.0 by typing :
 #    sudo apt-get install build-essential libopencv-dev
 # in a terminal.
@@ -35,8 +35,14 @@ CXXFLAGS += $(CFLAGS) -fpermissive
 #LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
 
-# Might need to remove -lrt for Mac OS...
-LDFLAGS += -lpthread -lrt -lm 
+# For MinGW
+#LDFLAGS += -lWinMM -lws2_32 -lpthread -lm
+
+# For Mac OS
+#LDFLAGS += -lpthread -lm
+
+# For Linux
+LDFLAGS += -lpthread -lrt -lm
 
 default: $(PROGS)
 
