@@ -13,7 +13,7 @@ Param autoreconnect remotewebcamcli instead of .bat?
 L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast signed/unsigned and greater size...
 
-mettre les parties initialisation de caméra dans le thread de la caméra pour reconnecter en cas de besoin...?
+mettre les parties initialisation de caméra dans le thread de la caméra pour reconnecter en cas de besoin...?->résoudrait aussi problème de cvQueryFrame() dans thread pour caméra avec cv320...
 
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
@@ -27,6 +27,8 @@ HSV?
 
 
 OLD
+
+remotewebcammultisrv marche pas avec webcam p70 git master cv320, OK avec video ou release v2.3.2...->cv320 does not seem to support that the webcam was opened in the main if there are cvQueryFrame() in another thread, OK, in C++ but still Kinect to update in C++...
 
 rajouter support libavcodec pour pouvoir gérer l'enregistrement à une résolution différente avec UxVCtrl?
 

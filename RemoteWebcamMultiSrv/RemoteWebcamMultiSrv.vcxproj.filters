@@ -74,24 +74,6 @@
     <ClInclude Include="..\..\OSUtils\OSTime.h">
       <Filter>OSUtils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvCore.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvDisp.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvDraw.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvFiles.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvProc.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Extensions\Img\CvUtils.h">
-      <Filter>Extensions\Img</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\OSUtils\OSThread.h">
       <Filter>OSUtils</Filter>
     </ClInclude>

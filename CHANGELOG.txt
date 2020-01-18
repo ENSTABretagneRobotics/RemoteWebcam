@@ -1,3 +1,7 @@
+29
+Enabled USE_OPENCV_HIGHGUI_CPP_API as a workaround to get back working camera with OpenCV 3.2.0, however this is currently incompatible with Kinect v2.
+Added CMakeLists.txt.
+
 28
 Default project files are now with OpenCV 3.2.0.
 
