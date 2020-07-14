@@ -25,6 +25,9 @@
     <Filter Include="Input Files">
       <UniqueIdentifier>{d25e9c94-697f-4210-a8fe-efae32813e36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Extensions\Net">
+      <UniqueIdentifier>{5004d7f7-c847-4ceb-8150-9f28b957a721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\OSUtils\OSCore.c">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Extensions\Img\CvInc.h">
       <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Net\httpUtils.h">
+      <Filter>Extensions\Net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

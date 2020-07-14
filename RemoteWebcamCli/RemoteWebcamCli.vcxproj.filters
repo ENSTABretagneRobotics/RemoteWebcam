@@ -25,6 +25,9 @@
     <Filter Include="Input Files">
       <UniqueIdentifier>{87ed59da-796e-4b79-99ff-99f82a8cb3ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Extensions\Net">
+      <UniqueIdentifier>{25cc695b-4518-485e-8df4-d737f120b221}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Globals.c">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Extensions\Img\CvInc.h">
       <Filter>Extensions\Img</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extensions\Net\httpUtils.h">
+      <Filter>Extensions\Net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

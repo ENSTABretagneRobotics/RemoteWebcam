@@ -13,7 +13,7 @@ CXX = g++
 CFLAGS += -O3
 CFLAGS += -Wall -Wextra
 #CFLAGS += -Winline
-CFLAGS += -I. -I../OSUtils -I../Extensions/Img
+CFLAGS += -I. -I../OSUtils -I../Extensions/Img -I../Extensions/Net
 #CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY
 #CFLAGS += -D _DEBUG_MESSAGES 
 #CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMMULTISRV
@@ -24,6 +24,9 @@ CFLAGS += -D OPENCV320
 
 # For MinGW
 #CFLAGS += -D ENABLE_GETTIMEOFDAY_WIN32 -D DISABLE_TIMEZONE_STRUCT_REDEFINITION
+
+# Depending on your OS (old Linux or Mac OS)...
+#CFLAGS += -D USE_OLD_CHRONO -D USE_OLD_TIMER
 
 CXXFLAGS += $(CFLAGS) -fpermissive
 
@@ -38,7 +41,7 @@ CXXFLAGS += $(CFLAGS) -fpermissive
 LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
 
 # For MinGW
-#LDFLAGS += -lWinMM -lws2_32 -lpthread -lm
+#LDFLAGS += -lWinMM -lws2_32 -lm
 
 # For Mac OS
 #LDFLAGS += -lpthread -lm
