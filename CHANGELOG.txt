@@ -1,8 +1,11 @@
+31
+Corrected bugs related to MJPEG server boundary.
+
 30
 Added .travis.yml.
 
 29
-Enabled USE_OPENCV_HIGHGUI_CPP_API as a workaround to get back working camera with OpenCV 3.2.0, however this is currently incompatible with Kinect v2.
+Enabled USE_OPENCV_HIGHGUI_CPP_API as a workaround to get back working camera with OpenCV 3.2.0.
 Added CMakeLists.txt.
 
 28

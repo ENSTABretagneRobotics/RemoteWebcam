@@ -1,5 +1,5 @@
-# Designed for Ubuntu 18.04 (and Android 4.1.2). 
-# You might need to install C/C++ development tools and OpenCV 3.2.0 by typing :
+# Designed for Ubuntu 16.04 (and Android 4.1.2). 
+# You might need to install C/C++ development tools and OpenCV 2.4 by typing :
 #    sudo apt-get install build-essential libopencv-dev
 # in a terminal.
 # Use dos2unix *.txt to ensure line endings are correct for Linux in the configuration files.
@@ -16,11 +16,10 @@ CFLAGS += -Wall -Wextra
 CFLAGS += -I. -I../OSUtils -I../Extensions/Img -I../Extensions/Net
 #CFLAGS += -D _DEBUG -D _DEBUG_DISPLAY
 #CFLAGS += -D _DEBUG_MESSAGES 
-#CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMMULTISRV
 CFLAGS += -D USE_OPENCV_HIGHGUI_CPP_API
-#CFLAGS += -D OPENCV2413
-CFLAGS += -D OPENCV320
-#CFLAGS += -D OPENCV412
+
+# For Android
+#CFLAGS += -D DISABLE_GUI_REMOTEWEBCAMMULTISRV -D DISABLE_TIMER_RECORDING -D DISABLE_CUSTOM_BAUDRATE
 
 # For MinGW
 #CFLAGS += -D ENABLE_GETTIMEOFDAY_WIN32 -D DISABLE_TIMEZONE_STRUCT_REDEFINITION
@@ -37,8 +36,8 @@ CXXFLAGS += $(CFLAGS) -fpermissive
 #CXXFLAGS += -std=c++11
 
 # Might be necessary to tweak depending on OpenCV version...
-#LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui
-LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
+LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+#LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
 
 # For MinGW
 #LDFLAGS += -lWinMM -lws2_32 -lm

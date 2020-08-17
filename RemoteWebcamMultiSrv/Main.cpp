@@ -236,17 +236,17 @@ inline int MovementDetection(IplImage* previmg, IplImage* img, IplImage* detecti
 		val = UINT_MAX; // Special number to indicate a full image.
 		memcpy(buf, (char*)&val, sizeof(unsigned int));
 		// Static compressed image dimensions.
-		i = bufmatvector.size();
+		i = (unsigned int)bufmatvector.size();
 		memcpy(buf+sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 		i = 1;
 		memcpy(buf+2*sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 		// Full image data (with static compression).
-		i = bufmatvector.size();
+		i = (unsigned int)bufmatvector.size();
 		while (i--)
 		{
 			buf[3*sizeof(unsigned int)+i] = (char)bufmatvector[i];
 		}
-		count = 3*sizeof(unsigned int)+bufmatvector.size();
+		count = (unsigned int)(3*sizeof(unsigned int)+bufmatvector.size());
 	}
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 	else
@@ -349,17 +349,17 @@ inline int MovementDetection2(IplImage* previmg, IplImage* img, IplImage* detect
 			return EXIT_FAILURE;
 		}
 		// Static compressed image dimensions.
-		i = bufmatvector.size();
+		i = (unsigned int)bufmatvector.size();
 		memcpy(buf+sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 		i = 1;
 		memcpy(buf+2*sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 		// Full image data (with static compression).
-		i = bufmatvector.size();
+		i = (unsigned int)bufmatvector.size();
 		while (i--)
 		{
 			buf[3*sizeof(unsigned int)+i] = (char)bufmatvector[i];
 		}
-		count = 3*sizeof(unsigned int)+bufmatvector.size();
+		count = (unsigned int)(3*sizeof(unsigned int)+bufmatvector.size());
 		bufmatvector.clear();
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 	}
@@ -446,6 +446,10 @@ int handlecli(SOCKET sockcli, void* pParam)
 								free(sendbuf);
 								return EXIT_FAILURE;
 							}
+
+							// See https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html, 
+							// https://stackoverflow.com/questions/47729941/mjpeg-over-http-specification...
+
 							memset(httpbuf, 0, sizeof(httpbuf));
 							sprintf(httpbuf, 
 								"HTTP/1.1 200 OK\r\n"
@@ -455,10 +459,11 @@ int handlecli(SOCKET sockcli, void* pParam)
 								//"Expires: 0\r\n"
 								//"Cache-Control: no-cache, private, no-store, must-revalidate, pre-check = 0, post-check = 0, max-age = 0\r\n"
 								//"Pragma: no-cache\r\n"
-								"Content-Type: multipart/x-mixed-replace; boundary=--boundary\r\n"
+								"Content-Type: multipart/x-mixed-replace; boundary=boundary\r\n"
 								//"Media-type: image/jpeg\r\n"
-								"\r\n");
-							if (sendall(sockcli, httpbuf, strlen(httpbuf)) != EXIT_SUCCESS)
+								//"\r\n" // CRLF will be in the next encapsulation boundary "\r\n--boundary\r\n"...
+							);
+							if (sendall(sockcli, httpbuf, (int)strlen(httpbuf)) != EXIT_SUCCESS)
 							{
 								free(sendbuf);
 								return EXIT_FAILURE;
@@ -485,7 +490,7 @@ int handlecli(SOCKET sockcli, void* pParam)
 				free(sendbuf);
 				return EXIT_FAILURE;
 			}
-			mSleep(captureperiod);
+			uSleep(1000*captureperiod);
 			break;
 		}
 
@@ -698,17 +703,17 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 				return 0;
 			}
 			// Static compressed image dimensions.
-			i = bufmatvector.size();
+			i = (unsigned int)bufmatvector.size();
 			memcpy(databuf+sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 			i = 1;
 			memcpy(databuf+2*sizeof(unsigned int), (char*)&i, sizeof(unsigned int));
 			// Full image data (with static compression).
-			i = bufmatvector.size();
+			i = (unsigned int)bufmatvector.size();
 			while (i--)
 			{
 				databuf[3*sizeof(unsigned int)+i] = (char)bufmatvector[i];
 			}
-			nbBytes = 3*sizeof(unsigned int)+bufmatvector.size();
+			nbBytes = (int)(3*sizeof(unsigned int)+bufmatvector.size());
 			bufmatvector.clear();
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 #ifndef DISABLE_GUI_REMOTEWEBCAMMULTISRV
@@ -769,7 +774,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 				}
 				memset(httpbuf, 0, sizeof(httpbuf));
 				sprintf(httpbuf,
-					"--boundary\r\n"
+					"\r\n--boundary\r\n"
 					"Content-Type: image/jpeg\r\n"
 					"Content-Length: %d\r\n"
 					"\r\n", mat->rows*mat->cols);
@@ -788,14 +793,14 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 				}
 				memset(httpbuf, 0, sizeof(httpbuf));
 				sprintf(httpbuf,
-					"--boundary\r\n"
+					"\r\n--boundary\r\n"
 					"Content-Type: image/jpeg\r\n"
 					"Content-Length: %d\r\n"
 					"\r\n", (int)bufmatvector.size());
 				memcpy(databuf+nbBytes, httpbuf, strlen(httpbuf));
-				nbBytes += strlen(httpbuf);
+				nbBytes += (int)strlen(httpbuf);
 				// Full image data (with static compression).
-				i = bufmatvector.size();
+				i = (unsigned int)bufmatvector.size();
 				while (i--)
 				{
 					databuf[nbBytes+i] = (char)bufmatvector[i];
@@ -837,7 +842,7 @@ THREAD_PROC_RETURN_VALUE handlecam(void* pParam)
 #endif // !USE_OPENCV_HIGHGUI_CPP_API
 		if ((char)c == 27) break;
 #else
-		mSleep(captureperiod);
+		uSleep(1000*captureperiod);
 #endif // !DISABLE_GUI_REMOTEWEBCAMMULTISRV
 		if (bStop) break;
 	}

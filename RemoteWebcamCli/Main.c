@@ -385,11 +385,11 @@ int main(int argc, char* argv[])
 		sa.sin_port = htons((unsigned short)atoi(cli1port));
 
 		sprintf(databuf, "HELLO");
-		sendtoall(s1, databuf, strlen("HELLO")+1, (struct sockaddr*)&sa, sizeof(sa));
-		recvfromall(s1, databuf, strlen("OK")+1, (struct sockaddr*)&sa, (int*)&salen);
+		sendtoall(s1, databuf, (int)strlen("HELLO")+1, (struct sockaddr*)&sa, (int)sizeof(sa));
+		recvfromall(s1, databuf, (int)strlen("OK")+1, (struct sockaddr*)&sa, (int*)&salen);
 		sprintf(databuf, "HELLO");
-		sendall(s1, databuf, strlen("HELLO")+1);
-		recvall(s1, databuf, strlen("OK")+1);
+		sendall(s1, databuf, (int)strlen("HELLO")+1);
+		recvall(s1, databuf, (int)strlen("OK")+1);
 
 		//mSleep(15000);
 	}

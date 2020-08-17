@@ -55,7 +55,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;OPENCV320;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -77,7 +77,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;OPENCV320;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />

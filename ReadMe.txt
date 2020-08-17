@@ -14,7 +14,7 @@ _ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 _ Visual Studio 2017
 _ OpenCV 3.2.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv320.pdf )
 
-It is also supposed to be compatible with Linux with equivalent prerequisites, see Makefile.
+It is also supposed to be compatible with Linux with equivalent prerequisites, see CMakeLists.txt or Makefile.
 
 Restart the computer after installation.
 
