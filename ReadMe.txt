@@ -1,7 +1,7 @@
-This folder contains programs used to get a realtime remote access to a webcam. It is a TCP server opening a webcam and sending images to a TCP client optionally using :
+This folder contains programs used to get a realtime remote access to a webcam. It is a TCP server (RemoteWebcamMultiSrv) opening a webcam and sending images to a TCP client (RemoteWebcamCli) optionally using :
 _ JPEG compression provided by the OpenCV function cvEncodeImage() and with a time compression based on movement detection.
 _ No compression.
-_ MJPEG (compatible with e.g. VLC, Google Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV). This is the default.
+_ MJPEG (compatible with e.g. VLC, Google Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV, note that RemoteWebcamCli does not support MJPEG). This is the default.
 
 It is recommended to be connected with an administrator account, deactivate any antivirus, firewall or other settings that would block network ports. On Windows 7/8/10, choose Work/Private for the network type if asked when connecting to the different networks (avoid Public type, to check and change go to Network and Sharing Center and click on Public to be able to change to Work/Private, or go to PC Settings\Network, select the desired network and enable the option Find devices and content/Make this PC discoverable).
 Check also proxy settings of Internet Explorer, and any other installed browser.
