@@ -9,6 +9,7 @@
 
 #include "Globals.h"
 
+#if (CV_MAJOR_VERSION < 4)
 SOCKET s1;
 CvFont font;
 IplImage* image = NULL;
@@ -24,3 +25,4 @@ int captureperiod = 0;
 int timeout = 0;
 BOOL bWindowResizedFromServer = FALSE;
 BOOL bUDP = FALSE;
+#endif // (CV_MAJOR_VERSION < 4)

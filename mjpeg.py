@@ -4,7 +4,8 @@ capture = cv2.VideoCapture("http://127.0.0.1:4014/?action=stream?dummy=param.mjp
 try:
 	while True:
 		ret, frame = capture.read()
-		cv2.imshow("Python MJPEG Client", frame)
+		if ret > 0:
+		    cv2.imshow("Python MJPEG Client", frame)
 		cv2.waitKey(10)
 except KeyboardInterrupt:
 	print("Interrupted\n")

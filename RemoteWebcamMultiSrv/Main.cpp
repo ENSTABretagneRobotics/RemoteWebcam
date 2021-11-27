@@ -1,14 +1,12 @@
 #include "Globals.h"
 
-// min and max might cause incompatibilities with GCC...
-#ifndef _MSC_VER
+// min and max might cause incompatibilities...
 #ifndef max
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #endif // !max
 #ifndef min
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif // !min
-#endif // !_MSC_VER
 
 int LoadConfig()
 {

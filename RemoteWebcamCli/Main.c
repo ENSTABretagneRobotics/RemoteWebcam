@@ -1,15 +1,14 @@
 #include "Globals.h"
 
-// min and max might cause incompatibilities with GCC...
-#ifndef _MSC_VER
+// min and max might cause incompatibilities...
 #ifndef max
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #endif // !max
 #ifndef min
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif // !min
-#endif // !_MSC_VER
 
+#if (CV_MAJOR_VERSION < 4)
 int LoadConfig()
 {
 	FILE* file = NULL;
@@ -315,6 +314,7 @@ void CleanUp(void)
 	cvReleaseImage(&image);
 	cvDestroyWindow("Client");
 }
+#endif // (CV_MAJOR_VERSION < 4)
 
 #if defined(_WIN32) && !defined(_DEBUG)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow)
@@ -332,6 +332,7 @@ int main(int argc, char* argv[])
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
 
+#if (CV_MAJOR_VERSION < 4)
 	LoadConfig();
 
 	cvNamedWindow("Client", CV_WINDOW_KEEPRATIO);
@@ -455,6 +456,9 @@ int main(int argc, char* argv[])
 	free(databuf);
 	cvReleaseImage(&image);
 	cvDestroyWindow("Client");
+#else
+	printf("Unsupported OpenCV version\n");
+#endif // (CV_MAJOR_VERSION < 4)
 
 	return EXIT_SUCCESS;
 }

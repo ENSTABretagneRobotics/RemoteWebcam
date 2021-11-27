@@ -1,4 +1,5 @@
-update cli for cpp, changes from UxVCtrl, update Android...?
+RemoteWebcamCli cvDecodeImage() 20.04...->ne pourra pas marcher car en C->rajouter aussi auto download de OSUtils et Extensions?
+changes from UxVCtrl, update Android...?
 
 move MovementDetection() and MovementDetection2() to CvProc.h?
 

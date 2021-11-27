@@ -7,7 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.txt = CHANGELOG.txt
 		CMakeLists.txt = CMakeLists.txt
+		.github\workflows\github-actions.yml = .github\workflows\github-actions.yml
 		Makefile = Makefile
+		mjpeg.html = mjpeg.html
+		mjpeg.py = mjpeg.py
 		ReadMe.txt = ReadMe.txt
 		TODO.txt = TODO.txt
 	EndProjectSection

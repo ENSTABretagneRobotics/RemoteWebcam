@@ -14,6 +14,7 @@
 #include "OSNet.h"
 #include "CvInc.h"
 
+#if (CV_MAJOR_VERSION < 4)
 EXTERN_C SOCKET s1;
 EXTERN_C CvFont font;
 EXTERN_C IplImage* image;
@@ -29,5 +30,6 @@ EXTERN_C int captureperiod;
 EXTERN_C int timeout;
 EXTERN_C BOOL bWindowResizedFromServer;
 EXTERN_C BOOL bUDP;
+#endif // (CV_MAJOR_VERSION < 4)
 
 #endif // !GLOBALS_H
