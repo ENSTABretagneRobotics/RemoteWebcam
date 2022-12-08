@@ -29,6 +29,8 @@ HSV?
 
 OLD
 
+A cause de kinect.dll, il faut msvc110.dll...
+
 remotewebcammultisrv marche pas avec webcam p70 git master cv320, OK avec video ou release v2.3.2...->cv320 does not seem to support that the webcam was opened in the main if there are cvQueryFrame() in another thread, OK, in C++ but still Kinect to update in C++...
 
 rajouter support libavcodec pour pouvoir gérer l'enregistrement à une résolution différente avec UxVCtrl?
