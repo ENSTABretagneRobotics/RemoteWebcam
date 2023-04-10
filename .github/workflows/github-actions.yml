@@ -52,6 +52,20 @@ jobs:
     - run: cmake . && cmake --build .
 
  j5:
+    name: Windows Visual Studio 2022 x64
+    runs-on: windows-2022
+    steps: 
+    - uses: actions/checkout@v3
+    - run: |
+        choco install -y -r --no-progress wget
+        choco install -y -r --no-progress libopencv-dev --version=4.5.4.20230429 --params "'/url:https://github.com/lebarsfa/Packages/releases/download/libopencv-dev.4.5.4.20220805/libopencv-dev.4.5.4_x64_vc17_lib_Release.exe'"
+        wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
+        wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
+      shell: bash
+    - run: refreshenv.cmd & cmake -G "Visual Studio 17" -T v143 -A x64 -D OpenCV_ARCH=x64 -D OpenCV_RUNTIME=vc17 . & cmake --build . --config Release
+      shell: cmd
+
+ j6:
     name: Windows Visual Studio 2017 x64
     runs-on: windows-2019
     steps: 
@@ -65,22 +79,21 @@ jobs:
     - run: refreshenv.cmd & cmake -G "Visual Studio 16" -T v141 -A x64 -D OpenCV_ARCH=x64 -D OpenCV_RUNTIME=vc15 . & cmake --build . --config Release
       shell: cmd
 
- j6:
-    name: Windows MinGW 8.1.0 x64
-    runs-on: windows-latest
+ j7:
+    name: Windows MinGW 11.2.0 x64
+    runs-on: windows-2022
     steps: 
     - uses: actions/checkout@v3
     - run: |
         choco install -y -r --no-progress wget
-        choco install -y -r --no-progress libopencv-dev --version=4.2.0
+        choco install -y -r --no-progress libopencv-dev --version=4.5.4.20230429
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
         wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
       shell: bash
-    - run: |
-        export PATH=/c/OpenCV4.2.0/x64/mingw/bin:$PATH && cmake -G "MSYS Makefiles" . && cmake --build .
+    - run: cmake -G "MSYS Makefiles" . && cmake --build .
       shell: bash
  
- j7:
+ j8:
     name: Ubuntu 16.04 i386
     runs-on: ubuntu-latest
     steps: 
