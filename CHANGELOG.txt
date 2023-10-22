@@ -1,3 +1,6 @@
+33
+Changed build order since RemoteWebcamMultiSrv is the most important and RemoteWebcamCli build might fail with recent OpenCV or OS.
+
 32
 Added github-actions.yml.
 
