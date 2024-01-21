@@ -86,6 +86,7 @@ jobs:
     - uses: actions/checkout@v3
     - run: |
         choco install -y -r --no-progress wget
+        choco install -y -r --no-progress mingw --version=11.2.0.07112021 --force
         choco install -y -r --no-progress libopencv-dev --version=4.5.4.20230429
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
         wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
