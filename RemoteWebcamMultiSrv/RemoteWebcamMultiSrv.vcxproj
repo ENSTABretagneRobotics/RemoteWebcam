@@ -14,18 +14,18 @@
     <ProjectGuid>{CC16AD72-661C-48DC-9FA2-4DD265640B2C}</ProjectGuid>
     <RootNamespace>RemoteWebcamMultiSrv</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV4.10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_DEBUG_DISPLAY;_DEBUG_MESSAGES;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -64,8 +64,8 @@
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_world320d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV3.2.0\x86\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_world4100d.lib;;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV4.10.0\x86\vc17\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -76,7 +76,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;..\..\OSUtils;..\..\Extensions\Img;..\..\Extensions\Net;$(SystemDrive)\OpenCV4.10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_OPENCV_HIGHGUI_CPP_API;ENABLE_CVKINECT2SDKHOOK;ENABLE_GETTIMEOFDAY_WIN32;DISABLE_TIMEZONE_STRUCT_REDEFINITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -85,8 +85,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_world320.lib;libwebp.lib;ippicvmt.lib;IlmImf.lib;zlib.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;Vfw32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV3.2.0\x86\vc15\staticlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Kinect20.lib;WS2_32.lib;opencv_calib3d4100.lib;opencv_dnn4100.lib;opencv_gapi4100.lib;opencv_core4100.lib;opencv_features2d4100.lib;opencv_flann4100.lib;opencv_highgui4100.lib;opencv_videoio4100.lib;opencv_imgcodecs4100.lib;opencv_imgproc4100.lib;opencv_ml4100.lib;opencv_objdetect4100.lib;opencv_photo4100.lib;opencv_stitching4100.lib;opencv_video4100.lib;libwebp.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libprotobuf.lib;IlmImf.lib;zlib.lib;libopenjp2.lib;libjpeg-turbo.lib;libpng.lib;libtiff.lib;Vfw32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x86;$(SystemDrive)\OpenCV4.10.0\x86\vc17\staticlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

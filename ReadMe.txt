@@ -1,4 +1,4 @@
-This folder contains programs used to get a realtime remote access to a webcam. It is a TCP server (RemoteWebcamMultiSrv) opening a webcam and sending images to a TCP client (RemoteWebcamCli) optionally using:
+This folder contains programs used to get a realtime remote access to a webcam. It is a TCP server (RemoteWebcamMultiSrv) opening a webcam and sending images to a TCP client (RemoteWebcamCli, only compatible with OpenCV < 4) optionally using:
 _ JPEG compression provided by the OpenCV function cvEncodeImage() and with a time compression based on movement detection.
 _ No compression.
 _ MJPEG (compatible with e.g. VLC, Google Chrome (modify mjpeg.html to test), check also mjpeg.py for a sample client in Python using OpenCV, note that RemoteWebcamCli does not support MJPEG). This is the default.
@@ -11,8 +11,8 @@ It should work with the following software:
 _ Windows 10 Professional 64 bit
 _ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 *** DEVEL ***
-_ Visual Studio 2017
-_ OpenCV 3.2.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs2017_opencv320.pdf )
+_ Visual Studio 2022
+_ OpenCV 4.10.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs_opencv.pdf and adapt the instructions to the desired OpenCV version, see https://community.chocolatey.org/packages/libopencv-dev/4.10.0 )
 
 It is also supposed to be compatible with Linux with equivalent prerequisites (see e.g. https://www.ensta-bretagne.fr/lebars/Share/setup_qt_opencv.pdf), see CMakeLists.txt or Makefile.
 
