@@ -12,7 +12,7 @@ _ Windows 10 Professional 64 bit
 _ Kinect v2 SDK (not compatible with Visual Studio 2008 and Windows XP)
 *** DEVEL ***
 _ Visual Studio 2022
-_ OpenCV 4.10.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs_opencv.pdf and adapt the instructions to the desired OpenCV version, see https://community.chocolatey.org/packages/libopencv-dev/4.10.0 )
+_ OpenCV 4.10.0 (see http://www.ensta-bretagne.fr/lebars/Share/setup_vs_opencv.pdf and adapt the instructions to the desired OpenCV version, see https://community.chocolatey.org/packages/libopencv-dev/4.10.0.20240808 )
 
 It is also supposed to be compatible with Linux with equivalent prerequisites (see e.g. https://www.ensta-bretagne.fr/lebars/Share/setup_qt_opencv.pdf), see CMakeLists.txt or Makefile.
 

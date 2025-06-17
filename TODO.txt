@@ -1,26 +1,28 @@
+DISABLE_GUI_REMOTEWEBCAMMULTISRV might be necessary for macOS, see issue #2
+
 RemoteWebcamCli cvDecodeImage() 20.04...->ne pourra pas marcher car en C->rajouter aussi auto download de OSUtils et Extensions?
 changes from UxVCtrl, update Android...?
 
 move MovementDetection() and MovementDetection2() to CvProc.h?
 
-retourner des codes d'erreur différents...
-pour Android, il faudrait que AppNativeMain() lance dans un thread la boucle principale pour que ça puisse être arrêté correctement...->en fait c'est pas indispensable...
-pour retourner des codes d'erreur différents s'il y a un thread, il faudrait rajouter une fonction WaitForThreadReturnValue() qui utilise le 2ème param de pthread_join() et GetExitCodeThread()...
+retourner des codes d'erreur diffï¿½rents...
+pour Android, il faudrait que AppNativeMain() lance dans un thread la boucle principale pour que ï¿½a puisse ï¿½tre arrï¿½tï¿½ correctement...->en fait c'est pas indispensable...
+pour retourner des codes d'erreur diffï¿½rents s'il y a un thread, il faudrait rajouter une fonction WaitForThreadReturnValue() qui utilise le 2ï¿½me param de pthread_join() et GetExitCodeThread()...
 
-Bug pour webcam T100 si compilé avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
+Bug pour webcam T100 si compilï¿½ avec VS2012 et OpenCV 2.4.9, juste message d'erreur avec VS2008 et OpenCV 2.4.2?
 
 Param autoreconnect remotewebcamcli instead of .bat?
 
-L'arrêt avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop à LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
+L'arrï¿½t avec les exit() n'est vraiment pas propre, rajouter param &bToggleStop ï¿½ LaunchXXXSrv qu'on pourrait modifier pour faire stopper la boucle?
 "%.2x ", (int)(unsigned char)recvbuf[i] -> cast signed/unsigned and greater size...
 
-mettre les parties initialisation de caméra dans le thread de la caméra pour reconnecter en cas de besoin...?->résoudrait aussi problème de cvQueryFrame() dans thread pour caméra avec cv320...
+mettre les parties initialisation de camï¿½ra dans le thread de la camï¿½ra pour reconnecter en cas de besoin...?->rï¿½soudrait aussi problï¿½me de cvQueryFrame() dans thread pour camï¿½ra avec cv320...
 
 passer en UDP pour supporter plusieurs clients efficacement, UDP/multicast...?
 max UDP packet size : 65507...
 UDP marche pas pour l'instant, essayer de comprendre...
 
-ajouter gain et gamma en option + colormap et forcer une conversion de l'image en CV_UC3 pour comptabilité depth sensors (en même temps que le resize?)
+ajouter gain et gamma en option + colormap et forcer une conversion de l'image en CV_UC3 pour comptabilitï¿½ depth sensors (en mï¿½me temps que le resize?)
 
 ajouter son avec openal (remoteopenalsrv, remoteopenalcli)
 HSV?
@@ -33,36 +35,36 @@ A cause de kinect.dll, il faut msvc110.dll...
 
 remotewebcammultisrv marche pas avec webcam p70 git master cv320, OK avec video ou release v2.3.2...->cv320 does not seem to support that the webcam was opened in the main if there are cvQueryFrame() in another thread, OK, in C++ but still Kinect to update in C++...
 
-rajouter support libavcodec pour pouvoir gérer l'enregistrement à une résolution différente avec UxVCtrl?
+rajouter support libavcodec pour pouvoir gï¿½rer l'enregistrement ï¿½ une rï¿½solution diffï¿½rente avec UxVCtrl?
 
-Release : clarifier dans le dossier qu'il faut utiliser les binaires WindowsXP quand on n'a pas la Kinect, peut-être renommer en Windows et faire sous-dossier Kinect2
+Release : clarifier dans le dossier qu'il faut utiliser les binaires WindowsXP quand on n'a pas la Kinect, peut-ï¿½tre renommer en Windows et faire sous-dossier Kinect2
 
 Bug ralentissement du client parfois avec VS2008 et OpenCV 2.4.2 alors que version VS2012 et OpenCV 2.4.9 ou d'autres clients MJPEG marchent bien?->cvDecodeImage() very slow depending on computer and configuration?->VS2008 utilise maintenant OpenCV2.4.9
 
-rajouter dans serveur l'envoi en résolution plus faible : bForceResize, et aussi le mettre dans UxVCtrl?
-avoir hscale et vscale au lieu de juste scale si on veut passer de 16/9 à 3/4
-rajouter possibilité d'ouvrir un fichier niveau serveur comme dans UxVCtrl
+rajouter dans serveur l'envoi en rï¿½solution plus faible : bForceResize, et aussi le mettre dans UxVCtrl?
+avoir hscale et vscale au lieu de juste scale si on veut passer de 16/9 ï¿½ 3/4
+rajouter possibilitï¿½ d'ouvrir un fichier niveau serveur comme dans UxVCtrl
 
-Android, est-ce qu'elle peut supporter threads, enregistrement, timers?->threads partiels, pas vraiment timers ni même USE_OLD_TIMER, pas encore l'enregistrement mais peut-être avec OpenCV 3...
-créer fenêtre dans thread handlecam
-faire projet supplémentaire RemoteWebcamMultiSrv
-compatibilité mjpeg (surtout pour serveur)...
-bug cvdecode jpg (image jpg peut être théoriquement plus grande que image non compressée, et peut-être autre chose...)
+Android, est-ce qu'elle peut supporter threads, enregistrement, timers?->threads partiels, pas vraiment timers ni mï¿½me USE_OLD_TIMER, pas encore l'enregistrement mais peut-ï¿½tre avec OpenCV 3...
+crï¿½er fenï¿½tre dans thread handlecam
+faire projet supplï¿½mentaire RemoteWebcamMultiSrv
+compatibilitï¿½ mjpeg (surtout pour serveur)...
+bug cvdecode jpg (image jpg peut ï¿½tre thï¿½oriquement plus grande que image non compressï¿½e, et peut-ï¿½tre autre chose...)
 Position du bStop dans la boucle de handlecli?
 
 cvEncodeImage
-envoyer la taille de l'image au début
-envoyer nb octets au début
+envoyer la taille de l'image au dï¿½but
+envoyer nb octets au dï¿½but
 
-compression d'image : tableau allant de 0 à 255 et dans chaque case, liste d'index ayant cette valeur
+compression d'image : tableau allant de 0 ï¿½ 255 et dans chaque case, liste d'index ayant cette valeur
 
 nblevel
 level0 (in [0;255]);nbindex;index0;index1;...
 level1 (in [0;255]);nbindex;index0;index1;...
 ...
 
-palette de 2^8, 2^16 ou 2^24 (inutile) couleurs différentes utilisées dans l'image, 
+palette de 2^8, 2^16 ou 2^24 (inutile) couleurs diffï¿½rentes utilisï¿½es dans l'image, 
 on peut alors coder la couleur d'un pixel sur 1,2 ou 3(inutile) octets avec l'index de la couleur dans la palette.
 
-pour la compression temporelle, n'envoyer que les composantes couleurs qui ont significativement changées et leur index, 
-si le nombre d'octets à transmettre devient proche de la taille de l'image complète on envoie l'image complète
+pour la compression temporelle, n'envoyer que les composantes couleurs qui ont significativement changï¿½es et leur index, 
+si le nombre d'octets ï¿½ transmettre devient proche de la taille de l'image complï¿½te on envoie l'image complï¿½te
