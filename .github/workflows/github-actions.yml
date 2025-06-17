@@ -66,7 +66,7 @@ jobs:
 
  j6:
     name: Windows Visual Studio 2017 x64
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps: 
     - uses: actions/checkout@v4
     - run: |
@@ -75,7 +75,7 @@ jobs:
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
         wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
       shell: bash
-    - run: refreshenv.cmd & cmake -G "Visual Studio 16" -T v141 -A x64 -D OpenCV_ARCH=x64 -D OpenCV_RUNTIME=vc15 . & cmake --build . --config Release
+    - run: refreshenv.cmd & cmake -G "Visual Studio 17" -T v141 -A x64 -D OpenCV_ARCH=x64 -D OpenCV_RUNTIME=vc15 . & cmake --build . --config Release
       shell: cmd
 
  j7:
