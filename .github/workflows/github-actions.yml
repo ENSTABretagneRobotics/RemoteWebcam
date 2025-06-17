@@ -65,37 +65,30 @@ jobs:
       shell: cmd
 
  j6:
-    name: Windows Visual Studio 2017 x64
+    name: Windows Visual Studio 2022 x86
     runs-on: windows-2022
     steps: 
     - uses: actions/checkout@v4
     - run: |
         choco install -y -r --no-progress wget
-        choco install -y -r --no-progress opencv --version=3.4.8 --package-parameters '/Environment:C:\tools\opencv\build'
+        choco install -y -r --no-progress libopencv-dev --version=4.10.0 --params "'/url:https://github.com/lebarsfa/Packages/releases/download/libopencv-dev.4.10.0.20240807/libopencv-dev.4.10.0_x86_vc17_lib_Release.exe'"
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
         wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
       shell: bash
-    - run: refreshenv.cmd & cmake -G "Visual Studio 17" -T v141 -A x64 -D OpenCV_ARCH=x64 -D OpenCV_RUNTIME=vc15 . & cmake --build . --config Release
+    - run: refreshenv.cmd & cmake -G "Visual Studio 17" -T v143 -A Win32 -D OpenCV_ARCH=x86 -D OpenCV_RUNTIME=vc17 . & cmake --build . --config Release
       shell: cmd
 
  j7:
-    name: Windows MinGW 11.2.0 x64
+    name: Windows MinGW 13.2.0 x64
     runs-on: windows-2022
     steps: 
     - uses: actions/checkout@v4
     - run: |
         choco install -y -r --no-progress wget
-        choco install -y -r --no-progress mingw --version=11.2.0.07112021 --force
-        choco install -y -r --no-progress libopencv-dev --version=4.5.4.20230429
+        choco install -y -r --no-progress mingw --version=13.2.0 --force
+        choco install -y -r --no-progress libopencv-dev --version=4.6.0.20240808
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
         wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip
       shell: bash
     - run: cmake -G "MSYS Makefiles" . && cmake --build .
       shell: bash
- 
- j8:
-    name: Ubuntu 20.04 i386
-    runs-on: ubuntu-latest
-    steps: 
-    - uses: actions/checkout@v4
-    - run: docker run -i -v "${PWD}/..:${PWD}/.." i386/ubuntu:focal /bin/bash -c "linux32 --32bit i386 uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update ; apt-get -y install sudo lsb-release wget unzip build-essential cmake libopencv-dev libgtk2.0 && lsb_release -a && wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip && wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip && cmake . && cmake --build ."
