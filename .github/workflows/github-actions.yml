@@ -1,14 +1,14 @@
-on: 
+on:
     push:
-        branches: '**'
-        tags: '' # Restrict to blank tags
+        branches: ['**']
+        tags-ignore: ['**']  # Ignore all tag pushes
     pull_request:
 jobs:
  j1:
     name: Ubuntu 24.04
     runs-on: ubuntu-24.04
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         sudo apt-get -q update || true
         sudo apt-get install -y libopencv-dev
@@ -20,7 +20,7 @@ jobs:
     name: Ubuntu 22.04
     runs-on: ubuntu-22.04
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         sudo apt-get -q update || true
         sudo apt-get install -y libopencv-dev
@@ -32,7 +32,7 @@ jobs:
     name: macOS Sequoia
     runs-on: macos-15
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         brew install opencv
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
@@ -40,10 +40,10 @@ jobs:
     - run: cmake . && cmake --build .
 
  j4:
-    name: macOS Ventura
-    runs-on: macos-13
+    name: macOS Sonoma x86_64
+    runs-on: macos-15-intel
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         brew install opencv
         wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip
@@ -54,7 +54,7 @@ jobs:
     name: Windows Visual Studio 2022 x64
     runs-on: windows-2022
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         choco install -y -r --no-progress wget
         choco install -y -r --no-progress libopencv-dev --version=4.10.0 --params "'/url:https://github.com/lebarsfa/Packages/releases/download/libopencv-dev.4.10.0.20240807/libopencv-dev.4.10.0_x64_vc17_lib_Release.exe'"
@@ -68,7 +68,7 @@ jobs:
     name: Windows Visual Studio 2022 x86
     runs-on: windows-2022
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         choco install -y -r --no-progress wget
         choco install -y -r --no-progress libopencv-dev --version=4.10.0 --params "'/url:https://github.com/lebarsfa/Packages/releases/download/libopencv-dev.4.10.0.20240807/libopencv-dev.4.10.0_x86_vc17_lib_Release.exe'"
@@ -82,7 +82,7 @@ jobs:
     name: Windows MinGW 13.2.0 x64
     runs-on: windows-2022
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         choco install -y -r --no-progress wget
         choco install -y -r --no-progress mingw --version=13.2.0 --force
