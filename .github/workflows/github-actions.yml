@@ -3,6 +3,7 @@ on:
         branches: ['**']
         tags-ignore: ['**']  # Ignore all tag pushes
     pull_request:
+
 jobs:
  j1:
     name: Ubuntu 24.04
